@@ -11,22 +11,30 @@ theme:
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/back_to_top.js
 
 nav:
   - 首页: index.md
   - 编程:
       - Code Programming/index.md
       - 网页开发:
+          - Code Programming/Web Development/index.md
           - 自定义浏览器插件 DIYFilter:
               - 文件 1: Code Programming/Web Development/DIYFilter/s1-c1-f1-1.md
               - 文件 2: Code Programming/Web Development/DIYFilter/s1-c1-f1-2.md
           - Flask:
               - 文件 1: Code Programming/Web Development/Flask/s1-c1-f2-1.md
       - Python:
+          - Code Programming/Python/index.md
           - 图像处理:
               - 文件 1: Code Programming/Python/Image/s1-c2-f3-1.md
   - 语言:

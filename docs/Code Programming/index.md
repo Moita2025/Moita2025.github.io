@@ -1,17 +1,24 @@
-# Welcome to MkDocs
+---
+hide:
+  - navigation
+---
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# 编程（Code Programming）
 
-## Commands
+<button onclick="BackToTop()">返回首页</button>
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+<div class="grid cards" markdown>
 
-## Project layout
+-   :octicons-code-24:{ .lg .middle } &nbsp; __Python__
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+    ---
+
+    [:octicons-arrow-right-24: Know More](Python/index.md)
+
+-   :octicons-browser-24:{ .lg .middle } &nbsp; __网页开发（Web Development）__
+
+    ---
+
+    [:octicons-arrow-right-24: Know More](Web%20Development/index.md)
+
+</div>
