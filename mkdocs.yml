@@ -2,6 +2,11 @@ site_name: My Docs
 site_url: https://moita2025.github.io/
 theme:
   name: material
+  features:
+    - navigation.path
+    - navigation.prune
+    - navigation.tabs
+    - navigation.tabs.sticky
 
 markdown_extensions:
   - pymdownx.arithmatex:
@@ -10,3 +15,21 @@ markdown_extensions:
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - 首页: index.md
+  - 编程:
+      - Code Programming/index.md
+      - 网页开发:
+          - 自定义浏览器插件 DIYFilter:
+              - 文件 1: Code Programming/Web Development/DIYFilter/s1-c1-f1-1.md
+              - 文件 2: Code Programming/Web Development/DIYFilter/s1-c1-f1-2.md
+          - Flask:
+              - 文件 1: Code Programming/Web Development/Flask/s1-c1-f2-1.md
+      - Python:
+          - 图像处理:
+              - 文件 1: Code Programming/Python/Image/s1-c2-f3-1.md
+  - 语言:
+      - 英语:
+          - 托福:
+              - 文件 1: Language/English/TOEFL iBT/s2-c3-f4-1.md
