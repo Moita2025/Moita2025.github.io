@@ -21,6 +21,7 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - javascripts/back_to_top.js
+  - https://unpkg.com/twemoji@latest/dist/twemoji.min.js
 
 nav:
   - 首页: index.md
@@ -38,6 +39,7 @@ nav:
           - 图像处理:
               - 文件 1: Code Programming/Python/Image/s1-c2-f3-1.md
   - 语言:
+      - Languages/index.md
       - 英语:
           - 托福:
-              - 文件 1: Language/English/TOEFL iBT/s2-c3-f4-1.md
+              - 文件 1: Languages/English/TOEFL iBT/s2-c3-f4-1.md
