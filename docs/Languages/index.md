@@ -5,7 +5,7 @@ hide:
 
 # 语言
 
-<button onclick="BackToTop()">返回首页</button>
+<button onclick="BackToTop()">返回 首页</button>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

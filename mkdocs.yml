@@ -3,10 +3,12 @@ site_url: https://moita2025.github.io/
 theme:
   name: material
   features:
+    - content.code.copy
     - navigation.path
     - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.indexes
 
 markdown_extensions:
   - pymdownx.arithmatex:
@@ -16,6 +18,14 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite 
+  - pymdownx.tilde
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -37,7 +47,7 @@ nav:
       - Python:
           - Code_Programming/Python/index.md
           - 图像处理:
-              - 文件 1: Code_Programming/Python/Image/s1-c2-f3-1.md
+              - 随机噪声位图: Code_Programming/Python/Image/RandomNoise.md
   - 语言:
       - Languages/index.md
       - 英语:

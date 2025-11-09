@@ -5,7 +5,7 @@ hide:
 
 # Python
 
-<button onclick="BackToTop()">返回“编程”</button>
+<button onclick="BackToTop()">返回 “编程”</button>
 
 <div class="grid cards" markdown>
 
@@ -13,6 +13,6 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Image/)
+    [:octicons-arrow-right-24: Know More](Image/RandomNoise.md)
 
 </div>
