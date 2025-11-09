@@ -26,20 +26,20 @@ extra_javascript:
 nav:
   - 首页: index.md
   - 编程:
-      - Code Programming/index.md
+      - Code_Programming/index.md
       - 网页开发:
-          - Code Programming/Web Development/index.md
+          - Code_Programming/Web_Development/index.md
           - 自定义浏览器插件 DIYFilter:
-              - 文件 1: Code Programming/Web Development/DIYFilter/s1-c1-f1-1.md
-              - 文件 2: Code Programming/Web Development/DIYFilter/s1-c1-f1-2.md
+              - 文件 1: Code_Programming/Web_Development/DIYFilter/s1-c1-f1-1.md
+              - 文件 2: Code_Programming/Web_Development/DIYFilter/s1-c1-f1-2.md
           - Flask:
-              - 文件 1: Code Programming/Web Development/Flask/s1-c1-f2-1.md
+              - 文件 1: Code_Programming/Web_Development/Flask/s1-c1-f2-1.md
       - Python:
-          - Code Programming/Python/index.md
+          - Code_Programming/Python/index.md
           - 图像处理:
-              - 文件 1: Code Programming/Python/Image/s1-c2-f3-1.md
+              - 文件 1: Code_Programming/Python/Image/s1-c2-f3-1.md
   - 语言:
       - Languages/index.md
       - 英语:
           - 托福:
-              - 文件 1: Languages/English/TOEFL iBT/s2-c3-f4-1.md
+              - 文件 1: Languages/English/TOEFL_iBT/s2-c3-f4-1.md

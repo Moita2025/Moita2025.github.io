@@ -13,12 +13,12 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](DIYFilter/s1-c1-f1-1.md)
+    [:octicons-arrow-right-24: Know More](DIYFilter/)
 
 -   :octicons-browser-24:{ .lg .middle } &nbsp; __Flask 网页开发__
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Flask/s1-c1-f2-1.md)
+    [:octicons-arrow-right-24: Know More](Flask/)
 
 </div>

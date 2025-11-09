@@ -19,6 +19,6 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Web%20Development/index.md)
+    [:octicons-arrow-right-24: Know More](Web_Development/index.md)
 
 </div>

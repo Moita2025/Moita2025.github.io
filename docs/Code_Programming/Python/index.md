@@ -13,6 +13,6 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Image/s1-c2-f3-1.md)
+    [:octicons-arrow-right-24: Know More](Image/)
 
 </div>

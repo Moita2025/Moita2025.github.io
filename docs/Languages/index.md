@@ -28,7 +28,7 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](English/TOEFL%20iBT/s2-c3-f4-1.md)
+    [:octicons-arrow-right-24: Know More](English/TOEFL_iBT/)
 
 -   🇩🇪 &nbsp; __德语（Deutsch‌）__
 
