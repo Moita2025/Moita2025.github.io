@@ -1,11 +1,12 @@
 ---
 hide:
   - navigation
+  - toc
 ---
 
 # Python
 
-<button onclick="BackToTop()">返回 “编程”</button>
+<button onclick="BackToTop()" class="BackToTop">返回 “编程”</button>
 
 <div class="grid cards" markdown>
 
@@ -13,6 +14,6 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Image/RandomNoise.md)
+    [:octicons-arrow-right-24: 了解更多](Image/RandomNoise.md)
 
 </div>

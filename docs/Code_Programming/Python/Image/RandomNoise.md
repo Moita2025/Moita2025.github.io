@@ -1,6 +1,8 @@
 # 随机噪声位图生成
 
-<button onclick="BackToTop('/Code_Programming/Python/')">返回 “Python”</button>
+<button onclick="BackToTop('/Code_Programming/Python/')"  class="BackToTop">返回 “Python”</button>
+
+---
 
 生成指定尺寸、颜色固定、透明度随机的 PNG 位图
 

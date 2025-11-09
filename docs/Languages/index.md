@@ -1,11 +1,12 @@
 ---
 hide:
   - navigation
+  - toc
 ---
 
 # 语言
 
-<button onclick="BackToTop()">返回 首页</button>
+<button onclick="BackToTop()" class="BackToTop">返回 首页</button>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -28,12 +29,12 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](English/TOEFL_iBT/)
+    [:octicons-arrow-right-24: 了解更多](English/TOEFL_iBT/)
 
 -   🇩🇪 &nbsp; __德语（Deutsch‌）__
 
     ---
 
-    [:octicons-arrow-right-24: Know More]()
+    [:octicons-arrow-right-24: 了解更多]()
 
 </div>

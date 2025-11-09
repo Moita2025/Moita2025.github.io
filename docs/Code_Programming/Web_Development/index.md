@@ -1,11 +1,12 @@
 ---
 hide:
   - navigation
+  - toc
 ---
 
 # 网页开发（Web Development）
 
-<button onclick="BackToTop()">返回 “编程”</button>
+<button onclick="BackToTop()" class="BackToTop">返回 “编程”</button>
 
 <div class="grid cards" markdown>
 
@@ -13,12 +14,12 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](DIYFilter/)
+    [:octicons-arrow-right-24: 了解更多](DIYFilter/)
 
 -   :octicons-browser-24:{ .lg .middle } &nbsp; __Flask 网页开发__
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Flask/)
+    [:octicons-arrow-right-24: 了解更多](Flask/)
 
 </div>

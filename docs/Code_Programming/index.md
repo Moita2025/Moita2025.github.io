@@ -1,11 +1,12 @@
 ---
 hide:
   - navigation
+  - toc
 ---
 
 # 编程（Code Programming）
 
-<button onclick="BackToTop()">返回 首页</button>
+<button onclick="BackToTop()" class="BackToTop">返回 首页</button>
 
 <div class="grid cards" markdown>
 
@@ -13,12 +14,12 @@ hide:
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Python/index.md)
+    [:octicons-arrow-right-24: 了解更多](Python/index.md)
 
 -   :octicons-browser-24:{ .lg .middle } &nbsp; __网页开发（Web Development）__
 
     ---
 
-    [:octicons-arrow-right-24: Know More](Web_Development/index.md)
+    [:octicons-arrow-right-24: 了解更多](Web_Development/index.md)
 
 </div>

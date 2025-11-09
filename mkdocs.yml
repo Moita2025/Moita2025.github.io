@@ -33,6 +33,9 @@ extra_javascript:
   - javascripts/back_to_top.js
   - https://unpkg.com/twemoji@latest/dist/twemoji.min.js
 
+extra_css:
+  - css/back_to_top.css
+
 nav:
   - 首页: index.md
   - 编程:
