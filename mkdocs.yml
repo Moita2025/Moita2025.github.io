@@ -32,6 +32,7 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - javascripts/back_to_top.js
   - https://unpkg.com/twemoji@latest/dist/twemoji.min.js
+  - https://unpkg.com/rough-notation/lib/rough-notation.iife.js
 
 extra_css:
   - css/back_to_top.css

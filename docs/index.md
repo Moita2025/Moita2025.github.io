@@ -14,9 +14,24 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
 
-## Project layout
+## Rough Notation 测试
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+<span class="rn-e1">测试文字</span>
+
+<span class="rn-e2">测试文字</span>
+
+<span class="rn-e3">测试文字</span>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!window.RoughNotation) return;
+    const { annotate, annotationGroup } = window.RoughNotation;
+
+    const a1 = annotate(document.querySelector('.rn-e1'), { type: 'underline' });
+    const a2 = annotate(document.querySelector('.rn-e2'), { type: 'box' });
+    const a3 = annotate(document.querySelector('.rn-e3'), { type: 'circle' });
+
+    const ag = annotationGroup([a1, a2, a3]);
+    ag.show();
+  });
+</script>
