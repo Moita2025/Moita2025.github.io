@@ -50,6 +50,8 @@ nav:
               - 文件 1: Code_Programming/Web_Development/Flask/s1-c1-f2-1.md
       - Python:
           - Code_Programming/Python/index.md
+          - 文件处理:
+              - 遍历查询后缀名: Code_Programming/Python/File_System/FileExtTraverse.md
           - 图像处理:
               - 随机噪声位图: Code_Programming/Python/Image/RandomNoise.md
       - Markdown:
