@@ -11,22 +11,10 @@ hide:
 
 <div class="grid cards" markdown>
 
--   🇬🇧 &nbsp; __英语（English）__
+-   :fontawesome-solid-circle-info:{ .lg .middle } &nbsp; __考试内容__
 
     ---
 
-    [:octicons-arrow-right-24: 了解更多]()
-
--   🇬🇧 &nbsp; __TOEFL iBT__
-
-    ---
-
-    [:octicons-arrow-right-24: 了解更多]()
-
--   🇩🇪 &nbsp; __德语（Deutsch‌）__
-
-    ---
-
-    [:octicons-arrow-right-24: 了解更多]()
+    [:octicons-arrow-right-24: 了解更多](about.md)
 
 </div>
