@@ -26,6 +26,8 @@ markdown_extensions:
   - pymdownx.tilde
   - pymdownx.snippets
   - pymdownx.superfences
+  - admonition
+  - pymdownx.details
 
 extra_javascript:
   - javascripts/mathjax.js

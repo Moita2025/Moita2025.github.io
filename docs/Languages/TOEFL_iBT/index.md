@@ -9,6 +9,13 @@ hide:
 
 ---
 
+!!! warning "时效性警告"
+
+    请注意，该页面及其子页面具有时效性问题，仅适用于 **2026 年 1 月 21 日** 之前的托福考试
+    
+    托福考试改革的具体信息，请查阅：[Upcoming updates](https://www.ets.org/toefl/test-takers/ibt/upcoming-updates-jan-2026.html) ，以及其他官方网站
+
+
 <div class="grid cards" markdown>
 
 -   :fontawesome-solid-circle-info:{ .lg .middle } &nbsp; __考试内容__
