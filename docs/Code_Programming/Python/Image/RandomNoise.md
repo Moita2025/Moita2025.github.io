@@ -1,6 +1,6 @@
 # 随机噪声位图生成
 
-<button onclick="BackToTop('/Code_Programming/Python/')"  class="BackToTop">返回 “Python”</button>
+<button onclick="BackToTop('2')"  class="BackToTop">返回 “Python”</button>
 
 ---
 

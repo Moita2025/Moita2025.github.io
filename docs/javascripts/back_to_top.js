@@ -1,29 +1,32 @@
 function BackToTop(targetUrl = '') {
-	// 如果传入了目标 URL，使用传入的 URL
-	if (targetUrl) {
-		window.location.href = targetUrl;
-	} else {
-		// 如果没有传入目标 URL，获取当前网页 URL
-		let currentUrl = window.location.pathname;
+    // 如果 targetUrl 是非空且不是数字 → 直接跳转到指定 URL
+    if (targetUrl && isNaN(targetUrl)) {
+        window.location.href = targetUrl;
+        return;
+    }
 
-		// 分割当前 URL
-		let parts = currentUrl.split('/');
+    // 当前路径
+    let currentUrl = window.location.pathname;
 
-		// 返回到上一个目录（即去掉最后一个路径段）
-		if (currentUrl.endsWith('/') && currentUrl.length > 1) {
-			parts.pop();
-			parts.pop();
-		}
-		else
-		{
-			parts.pop();
-		}
+    // 分割路径
+    let parts = currentUrl.split('/');
 
-		let finalURL = parts.join('/') || '/';
+    // 去掉空项（开头或末尾的 / 会造成空字符串）
+    parts = parts.filter(p => p.length > 0);
 
-		console.log(finalURL);
+    // 默认层级为 1
+    let level = parseInt(targetUrl) || 1;
 
-		// 重新设置 URL，跳转到上一个目录
-		window.location.href = finalURL; // 如果为空，则跳转到根目录
-	}
+    // 截断目录（上 n 层）
+    parts = parts.slice(0, parts.length - level);
+
+    // 拼接成最终 URL
+    let finalURL = '/' + parts.join('/') + '/';
+
+    console.log(finalURL);
+
+    if (finalURL == "//") finalURL = "/";
+
+    // 跳转
+    window.location.href = finalURL;
 }
