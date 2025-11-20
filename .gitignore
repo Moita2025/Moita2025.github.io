@@ -1,0 +1,6 @@
+/.obsidian
+
+/site
+*.lnk
+/__pycache__
+start-mkdocs.ps1

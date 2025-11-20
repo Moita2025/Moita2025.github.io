@@ -1,0 +1,7 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+docs/Languages/TOEFL_iBT/Reading/Questions/SentSimplQ.md filter=SentSimplQ_F
+docs/Languages/TOEFL_iBT/Reading/Questions/NegFactInfoQ.md filter=NegFactInfoQ_F
+docs/Languages/TOEFL_iBT/Reading/Questions/InferQ.md filter=InferQ_F
+docs/Languages/TOEFL_iBT/Reading/Questions/PsgSummQ.md filter=PsgSummQ_F
