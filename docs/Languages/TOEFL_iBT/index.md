@@ -29,7 +29,7 @@ hide:
 
 -   __题型__
 
-    [:octicons-arrow-right-24: 了解更多](Reading/Questions/SentSimplQ.md)
+    [:octicons-arrow-right-24: 了解更多](Reading/Questions/FactInfoQ.md)
 
 -   __题材分类__
 

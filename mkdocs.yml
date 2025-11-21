@@ -96,10 +96,16 @@ nav:
           - 阅读:
               - Languages/TOEFL_iBT/Reading/Intro.md
               - 题型:
-                  - Languages/TOEFL_iBT/Reading/Questions/SentSimplQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/FactInfoQ.md
                   - Languages/TOEFL_iBT/Reading/Questions/NegFactInfoQ.md
                   - Languages/TOEFL_iBT/Reading/Questions/InferQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/RhetPurpQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/VocabQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/ReferQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/SentSimplQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/InserTextQ.md
                   - Languages/TOEFL_iBT/Reading/Questions/PsgSummQ.md
+                  - Languages/TOEFL_iBT/Reading/Questions/FillTabQ.md
               - Languages/TOEFL_iBT/Reading/ArtiSubjClasList.md
   
   - 金融:
