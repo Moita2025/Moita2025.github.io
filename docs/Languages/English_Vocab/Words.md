@@ -4,6 +4,8 @@
 
 ---
 
+<button class="ui-btn" onclick="showDialog(changeWordDOM)">切换其他词汇</button>
+
 <style>
   #words-table-container{text-align:center;}
   #words-table-container td{max-width: 150px;word-break: break-all;}
@@ -46,6 +48,19 @@
 </div>
 
 <ul id="search-result-list"></ul>
+
+<script>
+  const changeWordDOM = `
+    <div class="grid cards compact-grid-single-row">
+      <ul>
+        <li>
+          <p><strong>介绍</strong></p>
+          <p><a href="/test">切换</a></p>
+        </li>
+      </ul>
+    </div>
+  `;
+</script>
 
 <script src="/assets/javascripts/init_word_page.js"></script>
 <script src="/assets/javascripts/word_list/word_table_pagination.js"></script>
