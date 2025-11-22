@@ -15,7 +15,7 @@
 
 ---
 
-<div id="words-table-container" data-json="/assets/data/KyleBing-english-vocabulary/3-CET4-顺序.json"></div>
+<div id="words-table-container"></div>
 
 ---
 
@@ -47,6 +47,6 @@
 
 <ul id="search-result-list"></ul>
 
-<script src="/assets/javascripts/common_initWords.js"></script>
+<script src="/assets/javascripts/init_word_page.js"></script>
 <script src="/assets/javascripts/word_list/word_table_pagination.js"></script>
 <script src="/assets/javascripts/word_list/word_table_letter_index.js"></script>
