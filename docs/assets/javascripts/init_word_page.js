@@ -132,3 +132,54 @@ document.addEventListener("DOMContentLoaded", function() {
     rewriteMkdocsNav();
     rewriteMainTitle();
 });
+
+
+// ==============================
+// 生成词库切换对话框内容
+// ==============================
+function generateSwitchWordsHTML() {
+    const currentKey = window.currentWordKey;
+
+    let html = `
+      <h2>切换词汇表</h2>
+      <div class="grid cards compact-grid-single-row">
+        <ul>
+    `;
+
+    Object.keys(WORD_JSON_MAP).forEach(key => {
+        if (key !== currentKey) {   // 排除当前词库
+            const itemName = WORD_NAME_MAP[key];
+            const itemParam = key;
+
+            html += `
+              <li>
+                <p><strong>${itemName}</strong></p>
+                <p><a href="?en_words=${itemParam}">切换</a></p>
+              </li>
+            `;
+        }
+    });
+
+    html += `
+        </ul>
+      </div>
+    `;
+
+    return html;
+}
+
+
+
+// ==============================
+// 按钮绑定：点击弹出对话框
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector("#switch-words");
+
+    if (btn) {
+        btn.addEventListener("click", () => {
+            const htmlContent = generateSwitchWordsHTML();
+            showDialog(htmlContent);
+        });
+    }
+});

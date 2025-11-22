@@ -20,6 +20,12 @@
   max-width: 90%;       /* 小屏幕兼容 */
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   font-size: medium;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.dialog-box h2 {
+  margin-top: 0;
 }
 
 /* 电脑端：宽度变大 */
