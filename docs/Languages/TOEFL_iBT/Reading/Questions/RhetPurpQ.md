@@ -6,8 +6,7 @@
 
 ## 题目识别
 
-> The author discusses X in paragraph 2 in order to…
-> 
+> The author discusses X in paragraph 2 in order to…  
 > Why does the author mention X?
 
 ## 方法技巧

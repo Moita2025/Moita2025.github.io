@@ -5,11 +5,11 @@
     smudge = cat
 
 [filter "NegFactInfoQ_F"]
-    clean = sed '31,$d'
+    clean = sed '30,$d'
     smudge = cat
 
 [filter "InferQ_F"]
-    clean = sed '33,$d'
+    clean = sed '31,$d'
     smudge = cat
 
 [filter "PsgSummQ_F"]

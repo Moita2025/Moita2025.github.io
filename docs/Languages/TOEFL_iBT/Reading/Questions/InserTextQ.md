@@ -6,10 +6,8 @@
 
 ## 题目识别
 
-> Look at the four squares \[■] that indicate where the following sentence could be added to the passage. 
-> 
-> All three of them have strengths and weaknesses, but none adequately answers all of the questions the paintings present. 
-> 
+> Look at the four squares \[■] that indicate where the following sentence could be added to the passage.  
+> All three of them have strengths and weaknesses, but none adequately answers all of the questions the paintings present.  
 > Where would the sentence best fit?
 
 ## 方法技巧

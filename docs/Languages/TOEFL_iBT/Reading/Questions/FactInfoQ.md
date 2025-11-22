@@ -8,16 +8,13 @@
 
 **内容类**
 
-> According to the paragraph, which of the following is true of X? 
-> 
+> According to the paragraph, which of the following is true of X?  
 > The author’s description of X mentions which of the following?
 
 **逻辑类**
 
-> According to the paragraph, X occurred because… 
-> 
-> According to the paragraph, X did Y because… 
-> 
+> According to the paragraph, X occurred because…  
+> According to the paragraph, X did Y because…  
 > According to the paragraph, why did X do Y?
 
 ## 方法技巧

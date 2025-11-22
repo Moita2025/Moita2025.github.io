@@ -6,8 +6,7 @@
 
 ## 题目识别
 
-> According to paragraph 1, all of the following are true of stream sorting **EXCEPT**
->
+> According to paragraph 1, all of the following are true of stream sorting **EXCEPT**  
 > Which of the following is **NOT** mentioned in paragraph 1 as ...
 
 ## 方法技巧

@@ -31,7 +31,7 @@
     - 只涉及某段细节 → 排除
     - 副主题、例子、背景说明 → 排除
 
-### 二、三种做题方式（互补使用）
+### 三种做题方式（互补使用）
 
 #### 1. 借题做题（利用前题信息）
 
@@ -59,18 +59,18 @@
 
 常用三类可排除信号：
 
-##### (1) 例子（Example）
+**(1) 例子（Example）**
 
 - 包含 for example, for instance, especially, particularly 等
 - **注意：such as 不一定能排除**
     - 因为有时它引出的不是例子，而是类别说明
 
-##### (2) 数字细节
+**(2) 数字细节**
 
 - 涉及：min, hour, week, month, year, degree, day, times, meter…  
     → 几乎全部是细节，**总结题基本不选**
 
-##### (3) 特点（Feature / Characteristic / Trait）
+**(3) 特点（Feature / Characteristic / Trait）**
 
 - 若文章有多个重点内容，而选项只说其中一个内容的特点：  
     → 这通常属于局部细节，而非整体总结  

@@ -6,10 +6,8 @@
 
 ## 题目识别
 
-> Paragraph 2 **implies** that which of the following...
-> 
-> Which of the following claims about ... can be **inferred** from paragraph 5?
-> 
+> Paragraph 2 **implies** that which of the following...  
+> Which of the following claims about ... can be **inferred** from paragraph 5?  
 > What can be **inferred** from paragraph 1 about...
 
 - infer/imply/support/suggest/conclude
