@@ -53,6 +53,10 @@ hide:
 
     [:octicons-arrow-right-24: 了解更多](Listening/ChairListeningMethod.md)
 
+-   __示例__
+
+    [:octicons-arrow-right-24: 了解更多](Listening/Example.md)
+
 </div>
 
 ## :material-account-voice:{ .lg .middle } &nbsp; __托福口语__
