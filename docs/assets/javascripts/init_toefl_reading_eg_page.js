@@ -172,7 +172,7 @@ function renderPage(pageIndex) {
   // 更新页信息
   updatePageInfo();
 
-  updateSearchParams({ page: pageIndex });
+  window.Utils.url.updateSearchParams({ page: pageIndex });
 
   rewriteMainTitle();
   rewriteMkdocsToc();

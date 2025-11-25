@@ -60,7 +60,7 @@ function search_init()
             resultList.appendChild(li);
         }
 
-        updateSearchParams({ search: keyword });
+        window.Utils.url.updateSearchParams({ search: keyword });
     }
 
     const params = new URLSearchParams(window.location.search);
@@ -96,7 +96,7 @@ function search_init()
         resultList.innerHTML = "";
         inputEl.focus();
 
-        updateSearchParams({ search: "" });
+        window.Utils.url.updateSearchParams({ search: "" });
     });
 }
 

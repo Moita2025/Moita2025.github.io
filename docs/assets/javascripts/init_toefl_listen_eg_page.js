@@ -280,7 +280,7 @@ function renderPage(pageIndex) {
   updatePageInfo();
 
   // 同步 URL search param: ?TPO=该页对应的 TPO 编号
-  updateSearchParams({ TPO: tpoEntry.TPO });
+  window.Utils.url.updateSearchParams({ TPO: tpoEntry.TPO });
 
   rewriteMkdocsNav();
   rewriteMainTitle();

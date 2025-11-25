@@ -1,12 +1,10 @@
-/**
- * 通用：更新 URL Search Params（不刷新页面）
- * @param {Object} params - 要设置的参数，如 {TPO: 12, search:"apple"}
- * @param {Object} options - 配置项
- *   - clearHash: 是否清除 # 部分（默认 true）
- *   - usePush: 是否使用 pushState（默认 false -> replaceState）
- *   - removeEmpty: 是否在值为空时删除该参数（默认 true）
- */
-function updateSearchParams(params = {}, options = {}) {
+window.Utils = {
+    url: {},
+    str: {},
+    ui: {}
+};
+
+Utils.url.updateSearchParams = function (params = {}, options = {}) {
     const {
         clearHash = true,
         usePush = false,
@@ -38,3 +36,4 @@ function updateSearchParams(params = {}, options = {}) {
         window.history.replaceState({}, "", url.toString());
     }
 }
+

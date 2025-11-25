@@ -78,7 +78,7 @@ document.getElementById('prev-page').addEventListener('click', () => {
         currentPage--;
         renderPage(currentPage);
         updatePageInfo();
-        updateSearchParams({ page: currentPage });
+        window.Utils.url.updateSearchParams({ page: currentPage });
     }
 });
 
@@ -87,7 +87,7 @@ document.getElementById('next-page').addEventListener('click', () => {
         currentPage++;
         renderPage(currentPage);
         updatePageInfo();
-        updateSearchParams({ page: currentPage });
+        window.Utils.url.updateSearchParams({ page: currentPage });
     }
 });
 
@@ -98,7 +98,7 @@ function goToPage(page) {
         currentPage = targetPage;
         renderPage(currentPage);
         updatePageInfo();
-        updateSearchParams({ page: currentPage });
+        window.Utils.url.updateSearchParams({ page: currentPage });
     }
 }
 
