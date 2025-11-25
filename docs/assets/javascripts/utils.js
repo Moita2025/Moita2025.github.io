@@ -22,12 +22,12 @@ Utils.url.getSearchParam = function(config = {}){
     return config.defaultParam; // 默认
 }
 
-Utils.url.updateSearchParams = function(params = {}, options = {}){
+Utils.url.updateSearchParams = function(params = {}, config = {}){
     const {
         clearHash = true,
         usePush = false,
         removeEmpty = true,
-    } = options;
+    } = config;
 
     const url = new URL(window.location.href);
 
@@ -225,6 +225,171 @@ Utils.ui.bindDlg2Btn = function(btnSelector, dlgContent){
             });
         }
     });
+}
+
+Utils.ui.pagination = {
+    currentPage: 1,
+    totalPages: 1,
+    onPageChange: null,
+
+    updateTotalPages(totalItems, pageSize) {
+        totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        // 如果当前页超出范围，自动调整
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+    },
+
+    setCurrentPage(page) {
+        const target = Math.max(1, Math.min(totalPages, parseInt(page) || 1));
+        if (target !== currentPage) {
+            currentPage = target;
+            onPageChange?.(currentPage);
+        }
+    },
+
+    goToPage(page) {
+        setCurrentPage(page);
+        updateUrl();
+        updateUI();
+    },
+
+    prev() {
+        if (currentPage > 1) goToPage(currentPage - 1);
+    },
+
+    next() {
+        if (currentPage < totalPages) goToPage(currentPage + 1);
+    },
+
+    updateUrl() {
+        window.Utils.url.updateSearchParams({ page: currentPage === 1 ? null : currentPage });
+    },
+
+    updateUI() {
+        const infoEls = document.querySelectorAll('.page-info');
+        const inputEls = document.querySelectorAll('.page-input');
+
+        infoEls.forEach((infoEl) => {
+            infoEl.textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+        });
+
+        inputEls.forEach((inputEl) => {
+            inputEl.value = currentPage;
+        });
+
+        // 控制按钮禁用状态（可选美化）
+        document.querySelectorAll('.prev-page').forEach(btn => btn.disabled = currentPage <= 1);
+        document.querySelectorAll('.next-page').forEach(btn => btn.disabled = currentPage >= totalPages);
+    },
+
+    init(config) {
+        onPageChange = config.onChange;
+
+        // 从 URL 获取页码
+        const urlPage = window.Utils.url.getSearchParam({ paramName: "page", defaultParam: 1 });
+        currentPage = parseInt(urlPage) || 1;
+
+        updateTotalPages(config.totalItems, config.pageSize);
+        setCurrentPage(currentPage); // 会触发 onChange 和 URL 更新
+
+        // 绑定事件（支持多个按钮）
+        document.querySelectorAll('.prev-page').forEach(btn => btn.addEventListener('click', prev));
+        document.querySelectorAll('.next-page').forEach(btn => btn.addEventListener('click', next));
+        
+        const inputEls = document.querySelectorAll('.page-input');
+        const goPageBtns = document.querySelectorAll('.go-page');
+
+        goPageBtns.forEach((goPageBtn, index) => {
+            const inputEl = inputEls[index];  // 获取对应的输入框
+            if (goPageBtn && inputEl) {
+                // 点击事件
+                goPageBtn.addEventListener('click', () => {
+                    const val = inputEl.value;
+                    goToPage(val, index);  // 传递当前输入框的值和索引
+                });
+
+                // 支持回车跳转
+                inputEl.addEventListener('keypress', e => {
+                    if (e.key === 'Enter') {
+                        goToPage(e.target.value, index);  // 传递当前输入框的值和索引
+                    }
+                });
+            }
+        });
+    }
+};
+
+Utils.ui.renderTable = function(data, page, config = {}){
+    const {
+        pageSize = 20,
+        colFactor = 2,           // 每行显示几组“单词+翻译”
+        isColArrange = false,    // true=纵向填充，false=横向填充（默认）
+        containerId = 'words-table-container',
+        renderCell,              // 自定义渲染函数: (item, indexInPage) => `<td>...</td><td>...</td>`
+        emptyCell = ''           // 空单元格内容
+    } = config;
+
+    if (config.headerTitles.length !== colFactor) {
+        throw new Error(`config.headerTitles 长度必须等于 colFactor(${colFactor})，当前长度为 ${config.headerTitles.length}`);
+    }
+
+    const start = (page - 1) * pageSize;
+    const end = page * pageSize;
+    const pageData = data.slice(start, end);
+
+    const rows = Math.ceil(pageSize / colFactor);
+    const colsPerGroup = 2; // 单词 + 翻译
+    const totalCols = colFactor * colsPerGroup;
+
+    let html = `<table`;
+
+    // === thead ===
+    html += `<thead><tr>`;
+    for (let i = 0; i < colFactor; i++) {
+        let headers = "";
+        config.headerTitles.forEach(title => {
+            headers += `<th>${title}</th>`;
+        });
+        html += headers;
+    }
+    html += `</tr></thead>`;
+
+    // === tbody ===
+    html += `<tbody>`;
+    for (let r = 0; r < rows; r++) {
+        html += `<tr>`;
+        for (let c = 0; c < colFactor; c++) {
+            let indexInPage;
+            if (isColArrange) {
+                // 纵向填充：先填完一列再填下一列
+                indexInPage = r + c * rows;
+            } else {
+                // 横向填充（默认）
+                indexInPage = c + r * colFactor;
+            }
+
+            const item = pageData[indexInPage];
+
+            if (item !== undefined) {
+                if (typeof renderCell === 'function') {
+                   html += renderCell(item, indexInPage);
+                } else {
+                    let cells = "";
+                    config.headerTitles.forEach(title => {
+                        cells += `<td>缺省单元格</td>`;
+                    });
+                    html += cells;
+                }
+            } else {
+                html += emptyCell;
+            }
+        }
+         html += `</tr>`;
+       }
+    html += `</tbody></table>`;
+
+    document.getElementById(containerId).innerHTML = html;
 }
 
 ////////vocab

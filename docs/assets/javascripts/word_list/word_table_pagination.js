@@ -3,12 +3,10 @@ window.words = [];
 let currentPage = 1;
 let totalPages = 1;
 
-const pageParam = new URLSearchParams(window.location.search).get("page");
-
-if (pageParam)
-{
-    currentPage = pageParam;
-}
+currentPage = window.Utils.url.getSearchParam({
+    paramName: "page",
+    defaultParam: currentPage
+});
 
 // 渲染表格
 function renderPage(page, colFactor = 2, isColArrange = false) {
