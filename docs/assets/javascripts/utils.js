@@ -227,3 +227,26 @@ Utils.mkdocsRewrite.rewriteNav = function (config = {}){
         }
     });
 }
+
+Utils.mkdocsRewrite.rewriteMainTitle = function (config = {}){
+
+    const {
+        selector = ".md-typeset h1",
+        append = true,
+        brackets = true
+    } = config;
+
+    const h1 = document.querySelector(selector);
+    if (!h1) return;
+
+    if (!h1.innerText.includes(config.label)) {
+
+        var targetText = "";
+
+        if (brackets) targetText = ` (${config.label})`;
+        else targetText = `${config.label}`;
+
+        if (append) h1.innerText += targetText;
+        else h1.innerText = targetText;
+    }
+}

@@ -51,20 +51,6 @@ async function initWordsGeneric(eventName, onLoaded = null) {
 }
 
 // ==============================
-// 5. 主标题 h1 处理：添加 "(词汇名)"
-// ==============================
-function rewriteMainTitle() {
-    const h1 = document.querySelector(".md-typeset h1");
-    if (!h1) return;
-
-    const label = window.currentWordLabel;
-    if (!h1.innerText.includes(label)) {
-        h1.innerText += ` (${label})`;
-    }
-}
-
-
-// ==============================
 // 6. 页面加载后统一处理
 // ==============================
 document.addEventListener("DOMContentLoaded", function() {
@@ -74,7 +60,9 @@ document.addEventListener("DOMContentLoaded", function() {
         label: window.currentWordLabel,
         paramName: "en_words"
     });
-    rewriteMainTitle();
+    window.Utils.mkdocsRewrite.rewriteMainTitle({
+        label: window.currentWordLabel
+    });
 });
 
 
