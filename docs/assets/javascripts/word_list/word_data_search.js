@@ -45,7 +45,9 @@ function search_init()
         for (let i = 0; i < realCount; i++) {
             const item = uniqueResults[i].item;
             const li = document.createElement("li");
-            li.textContent = `${item.word}：${item.translations[0].translation}`;
+            li.innerHTML = `
+            <a href="/Languages/English_Vocab/WordDetail/?word=${item.word}&collection=${window.currentWordKey}" target="_blank">
+                <strong>${item.word}</strong></a>：${item.translations[0].translation}`;
             resultList.appendChild(li);
         }
 
