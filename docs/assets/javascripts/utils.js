@@ -430,6 +430,18 @@ Utils.vocab.WORD_NAME_MAP = {
     "sat": "SAT词汇"
 };
 
+Utils.vocab.speak = function(text, lang = "en-GB") {
+    if (! ("speechSynthesis" in window)) {
+        alert("当前浏览器不支持语音朗读");
+        return;
+    }
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang; // en-GB 英式，en-US 美式
+    utter.rate = 0.9;
+    window.speechSynthesis.speak(utter);
+};
+
 ////////mkdocsRewrite
 
 Utils.mkdocsRewrite.rewriteNav = function (config = {}){
