@@ -8,4 +8,5 @@
     <p style="text-align:center;padding:4rem;">加载中...</p>
 </div>
 
+<script src="/assets/javascripts/utils.js"></script>
 <script src="/assets/javascripts/init_toefl_reading_vocab.js"></script>

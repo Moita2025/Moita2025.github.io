@@ -36,7 +36,7 @@ class TOEFLVocabViewer {
         if (page && !isNaN(page)) this.currentPage = Math.max(1, parseInt(page));
 
         const dict = params.get(this.dictParam);
-        this.dictKey = dict && WORD_NAME_MAP[dict] ? dict : 'toefl';
+        this.dictKey = dict && window.Utils.vocab.WORD_NAME_MAP[dict] ? dict : 'toefl';
     }
 
     // loadArticleWords() 方法保持不变（前面已给出）
@@ -74,7 +74,7 @@ class TOEFLVocabViewer {
                 throw new Error(`未找到文章 "${articleTitle}" 的生词数据`);
             }
 
-            // 词库映射（和 WORD_NAME_MAP 保持一致，大写形式）
+            // 词库映射（和 window.Utils.vocab.WORD_NAME_MAP 保持一致，大写形式）
             const collectionMap = {
                 junior: 'Junior',
                 senior: 'Senior',
@@ -110,7 +110,7 @@ class TOEFLVocabViewer {
         const wordsPerCol = Math.ceil(pageWords.length / this.columns);
 
         // 词库中文名称（用于标题和切换按钮）
-        const dictDisplayName = WORD_NAME_MAP[this.dictKey] || this.dictKey.toUpperCase();
+        const dictDisplayName = window.Utils.vocab.WORD_NAME_MAP[this.dictKey] || this.dictKey.toUpperCase();
 
         let html = `
         <div class="toefl-vocab-header">
@@ -175,7 +175,7 @@ class TOEFLVocabViewer {
 
         // 切换词库 → 更换 dictKey 并重新加载对应词库的单词
         document.getElementById('switch-dict')?.addEventListener('click', async () => {
-            const keys = Object.keys(WORD_NAME_MAP);
+            const keys = Object.keys(window.Utils.vocab.WORD_NAME_MAP);
             const next = keys[(keys.indexOf(this.dictKey) + 1) % keys.length];
 
             this.dictKey = next;
@@ -217,17 +217,6 @@ class TOEFLVocabViewer {
             </div>`;
     }
 }
-
-// ==============================
-// 启动（保留你原有词库映射）
-// ==============================
-const WORD_NAME_MAP = {
-    "junior": "初中词汇",
-    "senior": "高中词汇",
-    "cet4": "四级词汇",
-    "cet6": "六级词汇",
-    "toefl": "托福词汇"
-};
 
 // 页面加载完成后启动
 document.addEventListener("DOMContentLoaded", () => {
