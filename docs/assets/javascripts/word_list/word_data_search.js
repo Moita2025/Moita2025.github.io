@@ -14,11 +14,9 @@ function search_init()
         resultListId: 'search-result-list',
         maxResults: 20, // 最多显示 20 条
         liInnerHTML: (item) => `
-            <a href="/Languages/English_Vocab/WordDetail/?word=${item.word}&collection=${window.currentWordKey}" target="_blank">
-                <strong>${item.word}</strong>
-            </a>：${item.translations[0].translation}`,
-        
-            overflowText: '…',
+            ${window.Utils.vocab.getWordLink(item.word, window.currentWordKey)}
+            ：${item.translations[0].translation}`,
+        overflowText: '…',
         overflowOpacity: 0.6,
         overflowFontWeight: 'bold'
     };

@@ -130,9 +130,7 @@ const TestUI = {
                 const w = window.Utils.str.b64d(q.word);
                 const item = window.words.find(x => x.word === w);
                 return `<div class="wrong-item">
-                    <a href="/Languages/English_Vocab/WordDetail/?word=${encodeURIComponent(w)}&collection=${encodeURIComponent(window.currentWordKey)}" target="_blank">
-                        <strong>${w}</strong>
-                    </a>
+                    ${window.Utils.vocab.getWordLink(w, window.currentWordKey)}
                     - ${item?.translations[0].translation || "(未找到释义)"}</div>`;
             }).join("");
     }

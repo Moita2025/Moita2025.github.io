@@ -11,9 +11,7 @@ initWordsGeneric('wordsReady', function(words) {
         isColArrange: false, // 或 true 试试纵向排版
         renderCell: (item) => `
             <td>
-                <a href="/Languages/English_Vocab/WordDetail/?word=${encodeURIComponent(item.word)}&collection=${encodeURIComponent(window.currentWordKey)}" target="_blank">
-                    <strong>${item.word}</strong>
-                </a>
+                ${window.Utils.vocab.getWordLink(item.word, window.currentWordKey)}
             </td>
             <td>${item.translations[0]?.translation || ''}</td>`
     };

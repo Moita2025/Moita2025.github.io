@@ -550,6 +550,16 @@ Utils.vocab.QuestionType = {
     }
 };
 
+Utils.vocab.getWordLink = function(word, collection){
+    const linkStr = `
+        <a href="/Languages/English_Vocab/WordDetail/?word=${encodeURIComponent(word)}&collection=${encodeURIComponent(collection)}" target="_blank">
+            <strong>${word}</strong>
+        </a>
+    `;
+
+    return linkStr;
+};
+
 ////////mkdocsRewrite
 
 Utils.mkdocsRewrite.rewriteNav = function (config = {}){
