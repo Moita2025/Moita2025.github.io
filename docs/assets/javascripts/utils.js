@@ -1,6 +1,7 @@
 window.Utils = {
     url: {},
     str: {},
+    list: {},
     ui: {},
     vocab: {},
     mkdocsRewrite: {}
@@ -63,6 +64,18 @@ Utils.str.escapeHTML = function(str){
     div.textContent = str;
     return div.innerHTML;
 }
+
+Utils.str.b64 = function(s){
+    return btoa(unescape(encodeURIComponent(s)));
+};
+
+Utils.str.b64d = function(s){
+    return decodeURIComponent(escape(atob(s)));
+};
+
+////////list
+
+Utils.list.shuffle = function(arr) { return arr.sort(() => Math.random() - 0.5); }
 
 ////////ui
 
@@ -440,6 +453,101 @@ Utils.vocab.speak = function(text, lang = "en-GB") {
     utter.lang = lang; // en-GB 英式，en-US 美式
     utter.rate = 0.9;
     window.speechSynthesis.speak(utter);
+};
+
+Utils.vocab.testEngineCore = {
+    questions: [],       // 最终生成的题目数组
+    currentIndex: 0,
+    result: {
+        total: 0,
+        correct: 0,
+        wrong: 0,
+        unfinished: 0,
+        wrongItems: []    // 统一存错题原始数据（可自定义结构）
+    },
+    ready: false,
+
+    init(questions) {
+        this.questions = questions;
+        this.currentIndex = 0;
+        this.result = {
+            total: questions.length,
+            correct: 0,
+            wrong: 0,
+            unfinished: questions.length,
+            wrongItems: []
+        };
+        this.ready = true;
+    },
+
+    answer(userAnswerB64, correctAnswerB64, currentQuestionItem) {
+        if (!this.questions[this.currentIndex]) return false;
+
+        const isCorrect = userAnswerB64 === correctAnswerB64;
+        if (isCorrect) {
+            this.result.correct++;
+        } else {
+            this.result.wrong++;
+            // 错题记录完全交给调用者决定存什么，这里只存原始题对象（或你自定义的）
+            this.result.wrongItems.push(currentQuestionItem || this.questions[this.currentIndex]);
+        }
+
+        this.result.unfinished = this.result.total - this.result.correct - this.result.wrong;
+        this.currentIndex++;
+        return isCorrect;
+    },
+
+    hasNext() {
+        return this.currentIndex < this.questions.length;
+    },
+
+    getCurrent() {
+        return this.questions[this.currentIndex];
+    },
+
+    getResult() {
+        return { ...this.result };
+    },
+
+    reset() {
+        this.currentIndex = 0;
+        this.ready = false;
+        this.questions = [];
+        this.result = { total: 0, correct: 0, wrong: 0, unfinished: 0, wrongItems: [] };
+    }
+};
+
+Utils.vocab.QuestionType = {
+    EngToZhMultipleChoice: {
+        name: "eng-to-zh-mc",
+        generate(words, count = 50, poolSize = 50 * 4) {
+            if (words.length < poolSize) throw new Error("单词数量不足");
+            if (poolSize % count != 0) throw new Error(`poolSize ${poolSize} 应当是 count ${count} 的倍数`);
+
+            const pool = window.Utils.list.shuffle([...words]).slice(0, poolSize);
+            const selected =  window.Utils.list.shuffle([...pool]).slice(0, count);
+
+            const questions = selected.map(item => {
+                const correctZh = item.translations[0].translation;
+
+                const wrongs =  window.Utils.list.shuffle(pool.filter(x => x.word !== item.word))
+                    .slice(0, parseInt(poolSize / count) - 1)
+                    .map(x => x.translations[0].translation);
+
+                const options =  window.Utils.list.shuffle([correctZh, ...wrongs]);
+
+                return {
+                    type: this.name,
+                    word: window.Utils.str.b64(item.word),                    // 题目：英文
+                    correct: window.Utils.str.b64(correctZh),                  // 正确答案 base64
+                    options: options.map(o => window.Utils.str.b64(o)),        // 四个选项都 base64
+                    raw: item                                 // 原始单词对象，方便错题分析
+                };
+            });
+
+            window.Utils.vocab.testEngineCore.init(questions);
+        }
+    }
 };
 
 ////////mkdocsRewrite
