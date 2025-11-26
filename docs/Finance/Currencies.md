@@ -73,3 +73,6 @@
 
 ---
 <div class="exchange-chart-wrapper" data-pair="CNY-JPY"><canvas></canvas></div>
+
+<script src="/assets/javascripts/third_party/chart.js"></script>
+<script src="/assets/javascripts/exchange_chart.js"></script>
