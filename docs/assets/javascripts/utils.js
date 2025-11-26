@@ -232,38 +232,45 @@ Utils.ui.pagination = {
     totalPages: 1,
     onPageChange: null,
 
+    // 1. 正确使用 this. 保存到对象自身
     updateTotalPages(totalItems, pageSize) {
-        totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-        // 如果当前页超出范围，自动调整
-        if (currentPage > totalPages) {
-            currentPage = totalPages;
+        this.totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        if (this.currentPage > this.totalPages) {
+            this.currentPage = this.totalPages;
         }
     },
 
     setCurrentPage(page) {
-        const target = Math.max(1, Math.min(totalPages, parseInt(page) || 1));
-        if (target !== currentPage) {
-            currentPage = target;
-            onPageChange?.(currentPage);
+        const target = Math.max(1, Math.min(this.totalPages, parseInt(page) || 1));
+        if (target !== this.currentPage) {
+            this.currentPage = target;
+            this.onPageChange?.(this.currentPage);
         }
     },
 
+    // 2. 全部改成普通函数（非箭头），这样可以用 this
     goToPage(page) {
-        setCurrentPage(page);
-        updateUrl();
-        updateUI();
+        this.setCurrentPage(page);
+        this.updateUrl();
+        this.updateUI();
     },
 
     prev() {
-        if (currentPage > 1) goToPage(currentPage - 1);
+        if (this.currentPage > 1) {
+            this.goToPage(this.currentPage - 1);
+        }
     },
 
     next() {
-        if (currentPage < totalPages) goToPage(currentPage + 1);
+        if (this.currentPage < this.totalPages) {
+            this.goToPage(this.currentPage + 1);
+        }
     },
 
     updateUrl() {
-        window.Utils.url.updateSearchParams({ page: currentPage === 1 ? null : currentPage });
+        window.Utils.url.updateSearchParams({
+            page: this.currentPage === 1 ? null : this.currentPage
+        });
     },
 
     updateUI() {
@@ -271,52 +278,61 @@ Utils.ui.pagination = {
         const inputEls = document.querySelectorAll('.page-input');
 
         infoEls.forEach((infoEl) => {
-            infoEl.textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+            infoEl.textContent = `第 ${this.currentPage} 页 / 共 ${this.totalPages} 页`;
         });
 
         inputEls.forEach((inputEl) => {
-            inputEl.value = currentPage;
+            inputEl.value = this.currentPage;
         });
 
-        // 控制按钮禁用状态（可选美化）
-        document.querySelectorAll('.prev-page').forEach(btn => btn.disabled = currentPage <= 1);
-        document.querySelectorAll('.next-page').forEach(btn => btn.disabled = currentPage >= totalPages);
+        // 控制按钮状态
+        document.querySelectorAll('.prev-page').forEach(btn => btn.disabled = this.currentPage <= 1);
+        document.querySelectorAll('.next-page').forEach(btn => btn.disabled = this.currentPage >= this.totalPages);
     },
 
+    // 3. init 中所有事件绑定都用 .bind(this) 修正 this 指向
     init(config) {
-        onPageChange = config.onChange;
+        this.onPageChange = config.onChange;
 
-        // 从 URL 获取页码
+        // 从 URL 读取初始页码
         const urlPage = window.Utils.url.getSearchParam({ paramName: "page", defaultParam: 1 });
-        currentPage = parseInt(urlPage) || 1;
+        this.currentPage = parseInt(urlPage) || 1;
 
-        updateTotalPages(config.totalItems, config.pageSize);
-        setCurrentPage(currentPage); // 会触发 onChange 和 URL 更新
+        this.updateTotalPages(config.totalItems, config.pageSize);
+        this.setCurrentPage(this.currentPage); // 会触发 onChange、更新 URL 和 UI
 
-        // 绑定事件（支持多个按钮）
-        document.querySelectorAll('.prev-page').forEach(btn => btn.addEventListener('click', prev));
-        document.querySelectorAll('.next-page').forEach(btn => btn.addEventListener('click', next));
-        
+        const pag = this; // 缓存 this，方便下面 bind 使用
+
+        // 前一页 / 后一页按钮（支持多个）
+        document.querySelectorAll('.prev-page').forEach(btn => {
+            btn.addEventListener('click', pag.prev.bind(pag));
+        });
+        document.querySelectorAll('.next-page').forEach(btn => {
+            btn.addEventListener('click', pag.next.bind(pag));
+        });
+
+        // 跳转输入框 + 按钮（支持多个）
         const inputEls = document.querySelectorAll('.page-input');
         const goPageBtns = document.querySelectorAll('.go-page');
 
         goPageBtns.forEach((goPageBtn, index) => {
-            const inputEl = inputEls[index];  // 获取对应的输入框
-            if (goPageBtn && inputEl) {
-                // 点击事件
-                goPageBtn.addEventListener('click', () => {
-                    const val = inputEl.value;
-                    goToPage(val, index);  // 传递当前输入框的值和索引
-                });
+            const inputEl = inputEls[index];
+            if (!goPageBtn || !inputEl) return;
 
-                // 支持回车跳转
-                inputEl.addEventListener('keypress', e => {
-                    if (e.key === 'Enter') {
-                        goToPage(e.target.value, index);  // 传递当前输入框的值和索引
-                    }
-                });
-            }
+            const handleGo = () => {
+                const val = inputEl.value.trim();
+                if (val) pag.goToPage(val);
+            };
+
+            goPageBtn.addEventListener('click', handleGo);
+            inputEl.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    handleGo();
+                }
+            });
         });
+
+        this.updateUI();
     }
 };
 
@@ -342,7 +358,7 @@ Utils.ui.renderTable = function(data, page, config = {}){
     const colsPerGroup = 2; // 单词 + 翻译
     const totalCols = colFactor * colsPerGroup;
 
-    let html = `<table`;
+    let html = `<table>`;
 
     // === thead ===
     html += `<thead><tr>`;

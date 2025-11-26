@@ -23,20 +23,20 @@
 
 <!-- 分页器 -->
 <div id="paginator">
-  <button id="prev-page" class="ui-btn">上一页</button>
-  <button id="next-page" class="ui-btn">下一页</button>
+  <button class="ui-btn prev-page">上一页</button>
+  <button class="ui-btn next-page">下一页</button>
 
   <input
     id="page-input"
     type="number"
     min="1"
     value="1"
-    class="ui-int-input"
+    class="ui-int-input page-input"
   />
 
-  <button id="go-page" class="ui-btn">跳转</button>
+  <button class="ui-btn go-page">跳转</button>
 
-  <span id="page-info"></span>
+  <span class="page-info"></span>
 </div>
 
 ## 搜索

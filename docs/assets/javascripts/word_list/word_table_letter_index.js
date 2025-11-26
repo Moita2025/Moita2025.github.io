@@ -68,7 +68,7 @@ function renderLetterButtons() {
 
         // ✅ 新增：点击字母按钮跳页
         btn.addEventListener('click', () => {
-            goToPage(p);  // 调用 word_table_pagination.js 的公共函数
+            window.Utils.ui.pagination.goToPage(p);  // 调用 word_table_pagination.js 的公共函数
         });
 
         container.appendChild(btn);
