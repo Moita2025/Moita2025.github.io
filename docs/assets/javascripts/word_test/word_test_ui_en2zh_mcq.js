@@ -26,7 +26,7 @@ const TestUI = {
 
         this.app.innerHTML = `
             <div class="test-progress">
-                <div class="bar" style="width:${(TestEngine.getCurrentIdx() / 50) * 100}%"></div>
+                <div class="bar" style="width:${(TestEngine.getCurrentIdx() / TestEngine.core.questions.length) * 100}%"></div>
             </div>
 
             <div class="test-count">
@@ -49,7 +49,9 @@ const TestUI = {
         // 绑定事件
         document.querySelectorAll(".opt-btn").forEach(btn => {
             btn.onclick = () => {
-                TestEngine.answer(btn.dataset.opt);
+                const q = TestEngine.getCurrent();
+                TestEngine.answer(btn.dataset.opt, q.correct, q);
+
                 if (TestEngine.hasNext()) {
                     this.renderQuestion();
                 } else {
@@ -127,7 +129,11 @@ const TestUI = {
             .map(q => {
                 const w = window.Utils.str.b64d(q.word);
                 const item = window.words.find(x => x.word === w);
-                return `<div class="wrong-item">${w} - ${item?.translations[0].translation || "(未找到释义)"}</div>`;
+                return `<div class="wrong-item">
+                    <a href="/Languages/English_Vocab/WordDetail/?word=${encodeURIComponent(w)}&collection=${encodeURIComponent(window.currentWordKey)}" target="_blank">
+                        <strong>${w}</strong>
+                    </a>
+                    - ${item?.translations[0].translation || "(未找到释义)"}</div>`;
             }).join("");
     }
 };
