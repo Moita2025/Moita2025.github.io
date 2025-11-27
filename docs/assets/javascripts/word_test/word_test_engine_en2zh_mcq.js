@@ -2,9 +2,8 @@ let currentEngineInstance = null;
 
 function startTest(words, type = "EngToZhMultipleChoice") {
     currentEngineInstance = window.Utils.vocab.QuestionType[type].generate(words, 50, 200);
-    console.log("试题生成成功，共 50 题", currentEngineInstance);
+    //console.log("试题生成成功，共 50 题", currentEngineInstance);
 
-    // 直接传这个有数据的实例
     TestUI.start(currentEngineInstance, type);
 }
 
@@ -18,10 +17,10 @@ window.TestUI = {
         }
 
         const renderer = window.Utils.vocab.QuestionRenderer[type];
-        renderer.init?.(engineInstance, this.core);                    // Renderer 也 init
+        renderer.init(engineInstance, this.core);    
+
         this.core.setRenderer(renderer);
         this.core.init(engineInstance);
-
         this.core.renderQuestion();
     }
 };
