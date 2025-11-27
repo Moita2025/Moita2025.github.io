@@ -1,5 +1,3 @@
-window.blogStatusDict["testReady"]  = false;
-
 // ============ 抽题核心状态 ============
 window.TestEngine = {
     core: window.Utils.vocab.testEngineCore,
@@ -7,8 +5,6 @@ window.TestEngine = {
     startEngToZhTest(words) {
         try {
             window.Utils.vocab.QuestionType.EngToZhMultipleChoice.generate(words, 50, 200);
-            window.blogStatusDict["testReady"] = true;
-            window.dispatchEvent(new CustomEvent("testReady"));
             console.log("【中英互选】试题已生成，共 50 题");
         } catch (err) {
             console.error(err.message);

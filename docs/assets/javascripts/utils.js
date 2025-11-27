@@ -544,7 +544,7 @@ Utils.vocab.QuestionType = {
                 };
             });
 
-            window.Utils.vocab.testEngineCore.init(questions);
+            window.TestEngine.core.init(questions);
         }
     }
 };
