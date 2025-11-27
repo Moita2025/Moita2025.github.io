@@ -244,6 +244,7 @@ Utils.ui.pagination = {
     currentPage: 1,
     totalPages: 1,
     onPageChange: null,
+    _inited: false,
 
     // 1. 正确使用 this. 保存到对象自身
     updateTotalPages(totalItems, pageSize) {
@@ -305,6 +306,10 @@ Utils.ui.pagination = {
 
     // 3. init 中所有事件绑定都用 .bind(this) 修正 this 指向
     init(config) {
+
+        if (this._inited) return;
+        this._inited = true;
+
         this.onPageChange = config.onChange;
 
         // 从 URL 读取初始页码
@@ -359,15 +364,11 @@ Utils.ui.renderTable = function(data, page, config = {}){
         emptyCell = ''           // 空单元格内容
     } = config;
 
-    if (config.headerTitles.length !== colFactor) {
-        throw new Error(`config.headerTitles 长度必须等于 colFactor(${colFactor})，当前长度为 ${config.headerTitles.length}`);
-    }
-
     const start = (page - 1) * pageSize;
-    const end = page * pageSize;
+    const end = Math.min(page * pageSize, data.length);
     const pageData = data.slice(start, end);
 
-    const rows = Math.ceil(pageSize / colFactor);
+    const rows = Math.ceil((end - start) / colFactor);
     const colsPerGroup = 2; // 单词 + 翻译
     const totalCols = colFactor * colsPerGroup;
 
@@ -404,7 +405,7 @@ Utils.ui.renderTable = function(data, page, config = {}){
                 if (typeof renderCell === 'function') {
                    html += renderCell(item, indexInPage);
                 } else {
-                    let cells = "";
+                    let cells = "<td></td>";
                     config.headerTitles.forEach(title => {
                         cells += `<td>缺省单元格</td>`;
                     });
