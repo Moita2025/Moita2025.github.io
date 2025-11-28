@@ -11,14 +11,20 @@ window.Utils = {
 
 Utils.url.getSearchParam = function(config = {}){
 
+    const {isInt = false} = config;
+
     const params = new URLSearchParams(window.location.search);
     const key = params.get(config.paramName);
 
     if (config.map) 
     {
-        if (key && config.map[key]) return key;
+        if (key && config.map[key]) {
+            return isInt ? parseInt(value, 10) : value;
+        }
     }
-    else if (key) {return key;}
+    else if (key) {
+        return isInt ? parseInt(value, 10) : value;
+    }
     
     return config.defaultParam; // 默认
 }
@@ -56,6 +62,18 @@ Utils.url.updateSearchParams = function(params = {}, config = {}){
     }
 }
 
+Utils.url.isLocalHttps = function(){
+    const { protocol, hostname } = window.location;
+
+    // 你可以按自己实际情况再扩展判断条件
+    const isLocalHost = 
+        hostname === 'localhost' || 
+        hostname === '127.0.0.1' || 
+        hostname.endsWith('.local');
+
+    return isLocalHost;
+}
+
 ////////str
 
 Utils.str.escapeHTML = function(str){
@@ -72,6 +90,13 @@ Utils.str.b64 = function(s){
 Utils.str.b64d = function(s){
     return decodeURIComponent(escape(atob(s)));
 };
+
+Utils.str.splitAfterColon = function(strings){
+    return strings.map(str => {
+        const index = str.indexOf(':');
+        return index === -1 ? str : str.substring(index + 1);
+    });
+}
 
 ////////list
 
@@ -422,6 +447,48 @@ Utils.ui.renderTable = function(data, page, config = {}){
     document.getElementById(containerId).innerHTML = html;
 }
 
+Utils.ui.generateDialogue = function(lines, parentElement, isDialogue, chatTitle = "聊天记录") {
+    
+    lines = Utils.str.splitAfterColon(lines);
+    
+    if (!isDialogue) {
+        lines.forEach(line => {
+            const p = document.createElement("p");
+            p.textContent = line;
+            parentElement.appendChild(p);
+        });
+        return;
+    }
+
+    const chatCard = document.createElement("div");
+    chatCard.className = "chat-card";
+
+    const chatHeader = document.createElement("div");
+    chatHeader.className = "chat-header";
+    const headerTitle = document.createElement("div");
+    headerTitle.className = "h2";
+    headerTitle.textContent = chatTitle;
+    chatHeader.appendChild(headerTitle);
+
+    const chatBody = document.createElement("div");
+    chatBody.className = "chat-body";
+
+    chatCard.appendChild(chatHeader);
+    chatCard.appendChild(chatBody);
+    parentElement.appendChild(chatCard);
+
+    lines.forEach((line, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = index % 2 === 0 ? "message incoming" : "message outgoing";
+
+        const p = document.createElement("p");
+        p.textContent = line;
+
+        wrapper.appendChild(p);
+        chatBody.appendChild(wrapper);
+    });
+}
+
 ////////vocab
 
 Utils.vocab.WORD_JSON_MAP = {
@@ -729,7 +796,10 @@ Utils.mkdocsRewrite.rewriteNav = function (config = {}){
 
         if (
             span && !span.innerText.includes(config.label) && 
-            config.rewrite_nav_items.includes(span.innerText.trim())
+            (
+                config.rewrite_nav_items.includes(span.innerText.trim()) ||
+                config.rewrite_nav_items.some(item => span.innerText.trim().includes(item))
+            )
         ) 
         {
             url.searchParams.set(config.paramName, config.key);
@@ -767,4 +837,61 @@ Utils.mkdocsRewrite.rewriteMainTitle = function (config = {}){
         if (append) h1.innerText += targetText;
         else h1.innerText = targetText;
     }
+}
+
+Utils.mkdocsRewrite.rewriteToc = function (config = {}){
+    const {
+        selector = ".md-nav.md-nav--secondary",
+    } = config;
+
+    const container = document.querySelector(selector);
+    const article = document.querySelector('.md-typeset');
+    if (!container || !article) return;
+
+    // 清空旧 toc（避免重复）
+    container.innerHTML = "";
+
+    // 1. 创建 Toc 标题 label
+    const label = document.createElement('label');
+    label.className = 'md-nav__title';
+    label.setAttribute('for', '__toc');
+    label.innerHTML = `
+        <span class="md-nav__icon md-icon"></span>
+        Table of contents
+    `;
+    container.appendChild(label);
+
+    // 2. 创建 TOC ul
+    const ul = document.createElement('ul');
+    ul.className = 'md-nav__list';
+    ul.dataset.mdComponent = 'toc';
+    container.appendChild(ul);
+
+    // 3. 找到所有 h2
+    const h2s = article.querySelectorAll('h2');
+
+    h2s.forEach(h2 => {
+        // h2 文本
+        const title = h2.textContent.trim();
+
+        // 生成 id（简单 slug，可根据需要增强）
+        const id = title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '').toLowerCase();
+
+        // 给 h2 设置 id
+        h2.id = id;
+
+        // 生成 li
+        const li = document.createElement('li');
+        li.className = 'md-nav__item';
+
+        li.innerHTML = `
+        <a href="#${id}" class="md-nav__link">
+            <span class="md-ellipsis">
+            ${title}
+            </span>
+        </a>
+        `;
+
+        ul.appendChild(li);
+    });
 }

@@ -7,21 +7,21 @@
 <div id="example_reminder">该例子由 <a href="https://grok.com/" target="_blank">Grok</a> 生成。仅供参考</div>
 
 <!-- 分页器 -->
-<div id="paginator" class="paginator_duplicate">
-  <button id="prev-page" class="ui-btn prev-page_duplicate">上一篇</button>
-  <button id="next-page" class="ui-btn next-page_duplicate">下一篇</button>
+<div id="paginator">
+  <button class="ui-btn prev-page">上一篇</button>
+  <button class="ui-btn next-page">下一篇</button>
 
   <input
     id="page-input"
     type="number"
     min="1"
     value="1"
-    class="ui-int-input page-input_duplicate"
+    class="ui-int-input page-input"
   />
 
-  <button id="go-page" class="ui-btn go-page_duplicate">跳转</button>
+  <button class="ui-btn go-page">跳转</button>
 
-  <span id="page-info" class="page-info_duplicate"></span>
+  <span class="page-info"></span>
 </div>
 
 <div id="text-container"></div>
@@ -29,21 +29,21 @@
 ---
 
 <!-- 分页器 -->
-<div id="paginator" class="paginator_duplicate">
-  <button id="prev-page" class="ui-btn prev-page_duplicate">上一篇</button>
-  <button id="next-page" class="ui-btn next-page_duplicate">下一篇</button>
+<div id="paginator">
+  <button class="ui-btn prev-page">上一篇</button>
+  <button class="ui-btn next-page">下一篇</button>
 
   <input
     id="page-input"
     type="number"
     min="1"
     value="1"
-    class="ui-int-input page-input_duplicate"
+    class="ui-int-input page-input"
   />
 
-  <button id="go-page" class="ui-btn go-page_duplicate">跳转</button>
+  <button class="ui-btn go-page">跳转</button>
 
-  <span id="page-info" class="page-info_duplicate"></span>
+  <span class="page-info"></span>
 </div>
 
 <script>

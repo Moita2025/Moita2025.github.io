@@ -1,508 +1,190 @@
-function splitAfterColon(strings) {
-    return strings.map(str => {
-        const index = str.indexOf(':');
-        return index === -1 ? str : str.substring(index + 1);
-    });
-}
+// init_toefl_listen_eg_page.js （极简重构版）
 
-function RenderTask(taskText, taskSetting) {
-    const container = document.getElementById("text-container");
-    //container.innerHTML = ""; // 清空旧内容
+const TPO_DATA_URL = '/assets/data/toefl_data/toefl_tpo1-55_listening_text.json';
+const TPO_FLAGS_URL = '/assets/data/toefl_data/toefl_tpo1-55_listening_text_structure_flags.json';
 
-    // ========== 工具函数 ==========
-    const createEl = (tag, text, className) => {
-        const el = document.createElement(tag);
-        if (text) el.textContent = text;
-        if (className) el.className = className;
-        return el;
-    };
+let tpoData = [];
+let tpoFlags = [];
 
-    const renderParagraph = (line) => {
-        const p = createEl("p", line);
-        container.appendChild(p);
-    };
+// ===================== 工具函数 =====================
+const createEl = (tag, text, className) => {
+    const el = document.createElement(tag);
+    if (text) el.textContent = text;
+    if (className) el.className = className;
+    return el;
+};
 
-    const renderDialogueLine = (line, index, parent) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = index % 2 === 0 ? "message incoming" : "message outgoing";
+const renderParagraph = (line, container) => {
+    container.appendChild(createEl("p", line));
+};
 
-        const p = document.createElement("p");
-        p.textContent = line;
+// ===================== RenderTask（保持不变或微调）=====================
+function RenderTask(taskText, taskSetting, container) {
+    // 1. Task 标题
+    container.appendChild(createEl("h2", `Task ${taskText.TaskNumber}`));
 
-        wrapper.appendChild(p);
-        parent.appendChild(wrapper);
-    };
-
-    // ========== 1. 渲染 Task 标题 ==========
-    const h2 = createEl("h2", `Task ${taskText.TaskNumber}`);
-    container.appendChild(h2);
-
-    // ========== 2. 判断存在 Reading ==========
+    // 2. Reading
     if (taskSetting.hasReading === "1") {
-        const hReading = createEl("p", "Reading", "section-title");
-        container.appendChild(hReading);
+        container.appendChild(createEl("p", "Reading", "section-title"));
+        const reading = taskText.Reading || [];
 
-        const reading = taskText.Reading;
-
-        if (taskSetting.readingHasTitle === "1") {
-            // 第一行标题居中
-            const title = createEl("p", reading[0], "reading-title");
-            container.appendChild(title);
-
-            // 其余为正文
-            for (let i = 1; i < reading.length; i++) {
-                renderParagraph(reading[i]);
-            }
+        if (taskSetting.readingHasTitle === "1" && reading.length > 0) {
+            container.appendChild(createEl("p", reading[0], "reading-title"));
+            reading.slice(1).forEach(line => renderParagraph(line, container));
         } else {
-            reading.forEach(renderParagraph);
+            reading.forEach(line => renderParagraph(line, container));
         }
     }
 
-    // ========== 3. 判断存在 Listening ==========
+    // 3. Listening
     if (taskSetting.hasListening === "1") {
-
         container.appendChild(document.createElement('hr'));
+        container.appendChild(createEl("p", "Listening", "section-title"));
 
-        const hListening = createEl("p", "Listening", "section-title");
-        container.appendChild(hListening);
-
-        const listening = splitAfterColon(taskText.Listening);
+        const listening = window.Utils.str.splitAfterColon(taskText.Listening);
         let startIdx = 0;
 
         if (taskSetting.listeningFirstIsIntro === "1") {
-            const intro = createEl("p", listening[0], "intro-line");
-            container.appendChild(intro);
+            container.appendChild(createEl("p", listening[0], "intro-line"));
             startIdx = 1;
         }
 
-        const chatCard = document.createElement("div");
-        chatCard.className = "chat-card";
-
-        const chatHeader = document.createElement("div");
-        chatHeader.className = "chat-header";
-        const headerTitle = document.createElement("div");
-        headerTitle.className = "h2";
-        headerTitle.textContent = "聊天记录";
-        chatHeader.appendChild(headerTitle);
-
-        const chatBody = document.createElement("div");
-        chatBody.className = "chat-body";
-
-        chatCard.appendChild(chatHeader);
-        chatCard.appendChild(chatBody);
-        container.appendChild(chatCard);
-
-        if (taskSetting.listeningIsDialogue === "1") {
-            // 对话（跳过 intro 行）
-            for (let i = startIdx; i < listening.length; i++) {
-                renderDialogueLine(listening[i], i - startIdx, chatBody);
-            }
-        } else {
-            chatCard.remove();
-            // 普通段落
-            for (let i = startIdx; i < listening.length; i++) {
-                renderParagraph(listening[i]);
-            }
-        }
+        window.Utils.ui.generateDialogue(
+            listening.slice(startIdx),
+            container,
+            taskSetting.listeningIsDialogue === "1"
+        );
     }
 
-    // ========== 4. Texts 部分渲染 ==========
+    // 4. Texts
     if (taskSetting.hasTexts === "1") {
-        const chatCard = document.createElement("div");
-        chatCard.className = "chat-card";
-
-        const texts = splitAfterColon(taskText.Texts);
+        const texts = window.Utils.str.splitAfterColon(taskText.Texts);
         let startIdx = 0;
 
         if (taskSetting.textsFirstIsIntro === "1") {
-            const intro = createEl("p", texts[0], "intro-line");
-            container.appendChild(intro);
+            container.appendChild(createEl("p", texts[0], "intro-line"));
             startIdx = 1;
         }
 
-        const chatHeader = document.createElement("div");
-        chatHeader.className = "chat-header";
-        const headerTitle = document.createElement("div");
-        headerTitle.className = "h2";
-        headerTitle.textContent = "聊天记录";
-        chatHeader.appendChild(headerTitle);
-
-        const chatBody = document.createElement("div");
-        chatBody.className = "chat-body";
-
-        chatCard.appendChild(chatHeader);
-        chatCard.appendChild(chatBody);
-        container.appendChild(chatCard);
-
-        if (taskSetting.textsIsDialogue === "1") {
-            for (let i = startIdx; i < texts.length; i++) {
-                renderDialogueLine(texts[i], i - startIdx, chatBody);
-            }
-        } else {
-            chatCard.remove();
-            for (let i = startIdx; i < texts.length; i++) {
-                renderParagraph(texts[i]);
-            }
-        }
+        window.Utils.ui.generateDialogue(
+            texts.slice(startIdx),
+            container,
+            taskSetting.textsIsDialogue === "1"
+        );
     }
 }
 
-const TPO_DATA_URL = '/assets/data/toefl_data/toefl_tpo1-55_listening_text.json';
-const TPO_FLAGS_URL = '/assets/data/toefl_data/toefl_tpo1-55_listening_text_structure_flags.json'; 
-
-let tpoData = [];       // 源数据（TPO 列表）
-let tpoFlags = [];      // 结构标记列表
-let currentPage = 1;    // 当前页（对应 tpoData 的索引 + 1）
-let totalPages = 1;
-
-// ===================== 1. 环境判断函数 =====================
-function isLocalHttps() {
-  const { protocol, hostname } = window.location;
-  // 你可以按自己实际情况再扩展判断条件
-  const isLocalHost =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname.endsWith('.local');
-
-  return isLocalHost;
-}
-
-// ===================== 2. URL 参数工具 =====================
-function getTpoFromSearchParam() {
-  const params = new URLSearchParams(window.location.search);
-  const tpoParam = params.get('TPO');
-  if (!tpoParam) return null;
-  const num = parseInt(tpoParam, 10);
-  return Number.isNaN(num) ? null : num;
-}
-
-// ===================== 3. 结构标记查找 / 默认设置构造 =====================
+// ===================== 查找结构标记 & 兜底规则 =====================
 function findTaskSetting(tpoNo, taskNo) {
-  if (!Array.isArray(tpoFlags)) return null;
-  return (
-    tpoFlags.find(
-      (row) =>
-        String(row.TPO) === String(tpoNo) &&
-        String(row.Task) === String(taskNo)
-    ) || null
-  );
+    //console.log(tpoFlags);
+    return tpoFlags.find(r => String(r.TPO) === String(tpoNo) && String(r.Task) === String(taskNo)) || null;
 }
 
-// 如果 flags 里没有对应记录，就用简单规则构造一个 setting
 function buildFallbackSetting(task) {
-  const hasReading = task.Reading && task.Reading.length > 0;
-  const hasListening = task.Listening && task.Listening.length > 0;
-  const hasTexts = task.Texts && task.Texts.length > 0;
+    const has = (arr) => arr && arr.length > 0;
+    const first = (arr) => has(arr) ? arr[0] : '';
 
-  const readingHasTitle = hasReading && task.Reading.length > 1 ? 1 : 0;
+    const looksLikeIntro = (s) => /now listen|listen to/i.test(s || '');
+    const looksLikeDialogue = (s) => /conversation|two students|professor|student/i.test(s || '');
 
-  const firstListening = hasListening ? task.Listening[0] : '';
-  const firstTexts = hasTexts ? task.Texts[0] : '';
-
-  const looksLikeIntro = (line) => {
-    if (!line) return false;
-    const s = line.trim().toLowerCase();
-    return (
-      s.startsWith('now listen') ||
-      s.startsWith('listen to') ||
-      s.startsWith('now listen to')
-    );
-  };
-
-  const looksLikeDialogueIntro = (line) => {
-    if (!line) return false;
-    const s = line.toLowerCase();
-    return (
-      s.includes('conversation between') ||
-      s.includes('conversation with') ||
-      s.includes('two students') ||
-      s.includes('between a student and') ||
-      s.includes('between a professor and')
-    );
-  };
-
-  return {
-    hasReading: hasReading ? '1' : '0',
-    hasListening: hasListening ? '1' : '0',
-    hasTexts: hasTexts ? '1' : '0',
-    readingHasTitle: readingHasTitle ? '1' : '0',
-    listeningFirstIsIntro: looksLikeIntro(firstListening) ? '1' : '0',
-    textsFirstIsIntro: looksLikeIntro(firstTexts) ? '1' : '0',
-    listeningIsDialogue: looksLikeDialogueIntro(firstListening) ? '1' : '0',
-    textsIsDialogue: looksLikeDialogueIntro(firstTexts) ? '1' : '0'
-  };
+    return {
+        hasReading: has(task.Reading) ? '1' : '0',
+        hasListening: has(task.Listening) ? '1' : '0',
+        hasTexts: has(task.Texts) ? '1' : '0',
+        readingHasTitle: has(task.Reading) && task.Reading.length > 1 ? '1' : '0',
+        listeningFirstIsIntro: looksLikeIntro(first(task.Listening)) ? '1' : '0',
+        textsFirstIsIntro: looksLikeIntro(first(task.Texts)) ? '1' : '0',
+        listeningIsDialogue: looksLikeDialogue(first(task.Listening)) ? '1' : '0',
+        textsIsDialogue: looksLikeDialogue(first(task.Texts)) ? '1' : '0'
+    };
 }
 
-// ===================== 4. 渲染 TPO（内部多次调用 RenderTask） =====================
-function RenderTPO(tpoEntry) {
-  const container = document.getElementById('text-container');
-  if (!container) return;
+// ===================== 渲染单个 TPO =====================
+function renderTPO(tpoEntry, container) {
+    container.innerHTML = '';
 
-  container.innerHTML = ''; // 清空
+    (tpoEntry.Tasks || []).forEach(task => {
+        const setting = findTaskSetting(tpoEntry.TPO, task.TaskNumber) || buildFallbackSetting(task);
 
-  // TPO 级别标题
-  /*const h1 = document.createElement('h1');
-  h1.textContent = `TPO ${tpoEntry.TPO}`;
-  container.appendChild(h1);*/
-
-  // 依次渲染该 TPO 下的所有 Task
-  (tpoEntry.Tasks || []).forEach((task) => {
-
-    // 找到该 Task 对应的 setting
-    const settingFromFlags = findTaskSetting(tpoEntry.TPO, task.TaskNumber);
-    const taskSetting =
-      settingFromFlags || buildFallbackSetting(task);
-
-    // 每个 Task 之间加一个分隔（可选）
-    const hr = document.createElement('hr');
-    container.appendChild(hr);
-
-    // 这里调用你已经实现好的 RenderTask(task, setting)
-    RenderTask(task, taskSetting);
-  });
-}
-
-// ===================== 5. 分页相关 =====================
-function renderPage(pageIndex) {
-  // pageIndex 从 1 开始
-  if (!Array.isArray(tpoData) || tpoData.length === 0) return;
-
-  const idx = pageIndex - 1;
-  if (idx < 0 || idx >= tpoData.length) return;
-
-  const tpoEntry = tpoData[idx];
-  currentPage = pageIndex;
-
-  // 渲染当前 TPO
-  RenderTPO(tpoEntry);
-
-  // 更新页信息
-  updatePageInfo();
-
-  // 同步 URL search param: ?TPO=该页对应的 TPO 编号
-  window.Utils.url.updateSearchParams({ TPO: tpoEntry.TPO });
-
-  rewriteMkdocsNav();
-  rewriteMainTitle();
-  rewriteMkdocsToc();
-}
-
-function updatePageInfo() {
-  const pageInfoEls = document.querySelectorAll('.page-info_duplicate');
-  const pageInputEls = document.querySelectorAll('.page-input_duplicate');
-
-  pageInfoEls.forEach(el => {
-    el.textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页`;
-  });
-
-  pageInputEls.forEach(input => {
-    input.value = currentPage;
-  });
-}
-
-// 公共跳转函数
-function goToPage(page) {
-  const targetPage = parseInt(page, 10);
-  if (
-    !Number.isNaN(targetPage) &&
-    targetPage >= 1 &&
-    targetPage <= totalPages
-  ) {
-    renderPage(targetPage);
-  }
-}
-
-// 绑定分页器按钮
-function setupPaginator() {
-  const paginators = document.querySelectorAll('.paginator_duplicate');
-
-  paginators.forEach(p => {
-    const prevBtn = p.querySelector('.prev-page_duplicate');
-    const nextBtn = p.querySelector('.next-page_duplicate');
-    const goBtn = p.querySelector('.go-page_duplicate');
-    const pageInputEl = p.querySelector('.page-input_duplicate');
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-          renderPage(currentPage - 1);
-          syncPaginatorInputs();
-          scrollTo(0, 0);
+        // Task 之间加分隔线
+        if (container.children.length > 0) {
+            container.appendChild(document.createElement('hr'));
         }
-      });
-    }
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-          renderPage(currentPage + 1);
-          syncPaginatorInputs();
-          scrollTo(0, 0);
-        }
-      });
-    }
-
-    if (goBtn && pageInputEl) {
-      goBtn.addEventListener('click', () => {
-        goToPage(pageInputEl.value);
-        syncPaginatorInputs();
-        scrollTo(0,0);
-      });
-    }
-  });
-}
-
-function syncPaginatorInputs() {
-  document.querySelectorAll('.paginator_duplicate .page-input_duplicate')
-    .forEach(input => input.value = currentPage);
-}
-
-// ===================== 6. 初始化逻辑 =====================
-async function initToeflListenPage() {
-  const container = document.getElementById('text-container');
-  if (!container) return;
-
-  // 如果不是本地 https 环境：只展示 sample 示例 + 简单分页信息
-  if (!isLocalHttps()) {
-    // sampleTaskText / sampleSetting 从你的 html 中的 <script> 里拿
-    RenderTask(sampleTaskText, sampleSetting);
-    currentPage = 1;
-    totalPages = 1;
-    updatePageInfo();
-    return;
-  }
-
-  // 本地环境：尝试拉取两个 JSON
-  try {
-    const [tpoResp, flagsResp] = await Promise.all([
-      fetch(TPO_DATA_URL),
-      fetch(TPO_FLAGS_URL)
-    ]);
-
-    if (!tpoResp.ok || !flagsResp.ok) {
-      throw new Error('Fetch JSON failed');
-    }
-
-    tpoData = await tpoResp.json();
-    tpoFlags = await flagsResp.json();
-
-    if (!Array.isArray(tpoData)) {
-      throw new Error('TPO data is not an array');
-    }
-
-    totalPages = tpoData.length;
-    setupPaginator();
-
-    // 初始页：优先看 URL ?TPO= 参数
-    const tpoParam = getTpoFromSearchParam();
-    if (tpoParam != null) {
-      const idx = tpoData.findIndex(
-        (item) => String(item.TPO) === String(tpoParam)
-      );
-      if (idx !== -1) {
-        renderPage(idx + 1);
-        return;
-      }
-    }
-
-    // 默认从第一页开始
-    renderPage(1);
-  } catch (err) {
-    console.error('Init TOEFL page failed, fallback to sample:', err);
-    // 任一环节失败：退回示例模式（保证页面可用）
-    RenderTask(sampleTaskText, sampleSetting);
-    currentPage = 1;
-    totalPages = 1;
-    updatePageInfo();
-  }
-}
-
-// DOM Ready 后启动
-document.addEventListener('DOMContentLoaded', initToeflListenPage);
-
-function rewriteMkdocsNav() {
-    const label = "示例";
-    const selector = ".md-sidebar--primary .md-nav__item a";
-
-    document.querySelectorAll(selector).forEach(a => {
-
-        const url = new URL(a.href, location.origin);
-
-        // 在 span 中添加 "(xxx词汇)"
-        const span = a.querySelector("span");
-
-        if (
-            span && span.innerText.includes(label)
-        ) 
-        {
-            // 添加 en_words 参数
-            url.searchParams.set("TPO", currentPage);
-            a.href = url.toString();
-
-            span.innerText = `示例 (TPO ${currentPage})`;
-        }
+        RenderTask(task, setting, container);
     });
+
+    // 更新标题
+    window.Utils.mkdocsRewrite.rewriteMainTitle({
+        label: `示例 (TPO ${tpoEntry.TPO})`,
+        append: false,
+        brackets: false
+    });
+    window.Utils.mkdocsRewrite.rewriteToc();
+    window.Utils.mkdocsRewrite.rewriteNav({
+        rewrite_nav_items: ["示例"],
+        label: `示例 (TPO ${tpoEntry.TPO})`,
+        append: false,
+        brackets: false,
+        paramName: "TPO"
+    });
+
+    // 同步 URL 同步 TPO 参数
+    window.Utils.url.updateSearchParams({ TPO: tpoEntry.TPO });
 }
 
-function rewriteMainTitle() {
-    const h1 = document.querySelector(".md-typeset h1");
-    if (!h1) return;
+// ===================== 初始化 =====================
+async function initToeflListenPage() {
+    const container = document.getElementById('text-container');
+    if (!container) return;
 
-    const label = "示例";
-    if (h1.innerText.includes(label)) {
-        h1.innerText = `示例 (TPO ${currentPage})`;
+    // 非本地 https 环境 → 直接展示 sample
+    if (!window.Utils.url.isLocalHttps()) {
+        RenderTask(sampleTaskText, sampleSetting, container);
+        return;
+    }
+
+    try {
+        const [dataResp, flagsResp] = await Promise.all([
+            fetch(TPO_DATA_URL),
+            fetch(TPO_FLAGS_URL)
+        ]);
+
+        if (!dataResp.ok || !flagsResp.ok) throw new Error('fetch failed');
+
+        tpoData = await dataResp.json();
+        tpoFlags = await flagsResp.json();
+
+        if (!Array.isArray(tpoData) || tpoData.length === 0) throw new Error('no data');
+
+        // ========== 使用统一的 Utils.ui.pagination ==========
+        window.Utils.ui.pagination.init({
+            totalItems: tpoData.length,
+            pageSize: 1,                            // 每页 1 个 TPO
+            onChange: (page) => {
+                const entry = tpoData[page - 1];
+                renderTPO(entry, container);
+                scrollTo(0, 0);
+            }
+        });
+
+        // 优先读取 URL 中的 ?TPO= 参数
+        const urlTPO = window.Utils.url.getSearchParam({ paramName: "TPO", isInt: true });
+        if (urlTPO != null) {
+            const idx = tpoData.findIndex(item => String(item.TPO) === String(urlTPO));
+            if (idx !== -1) {
+                window.Utils.ui.pagination.setCurrentPage(idx + 1);
+                return;
+            }
+        }
+
+        // 默认第一页
+        renderTPO(tpoData[0], container);
+
+    } catch (err) {
+        console.error('加载 TPO 数据失败，回退到示例', err);
+        RenderTask(sampleTaskText, sampleSetting, container);
     }
 }
 
-function rewriteMkdocsToc() {
-  const container = document.querySelector('.md-nav.md-nav--secondary');
-  const article = document.querySelector('.md-typeset');
-  if (!container || !article) return;
-
-  // 清空旧 toc（避免重复）
-  container.innerHTML = "";
-
-  // 1. 创建 Toc 标题 label
-  const label = document.createElement('label');
-  label.className = 'md-nav__title';
-  label.setAttribute('for', '__toc');
-  label.innerHTML = `
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-  `;
-  container.appendChild(label);
-
-  // 2. 创建 TOC ul
-  const ul = document.createElement('ul');
-  ul.className = 'md-nav__list';
-  ul.dataset.mdComponent = 'toc';
-  container.appendChild(ul);
-
-  // 3. 找到所有 h2
-  const h2s = article.querySelectorAll('h2');
-
-  h2s.forEach(h2 => {
-    // h2 文本
-    const title = h2.textContent.trim();
-
-    // 生成 id（简单 slug，可根据需要增强）
-    const id = title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '').toLowerCase();
-
-    // 给 h2 设置 id
-    h2.id = id;
-
-    // 生成 li
-    const li = document.createElement('li');
-    li.className = 'md-nav__item';
-
-    li.innerHTML = `
-      <a href="#${id}" class="md-nav__link">
-        <span class="md-ellipsis">
-          ${title}
-        </span>
-      </a>
-    `;
-
-    ul.appendChild(li);
-  });
-}
+document.addEventListener('DOMContentLoaded', initToeflListenPage);
