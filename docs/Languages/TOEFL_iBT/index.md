@@ -15,6 +15,10 @@ hide:
     
     托福考试改革的具体信息，请查阅：[Upcoming updates](https://www.ets.org/toefl/test-takers/ibt/upcoming-updates-jan-2026.html) ，以及其他官方网站
 
+!!! note "注意"
+
+    “英语口语/写作素材（通用）” 没有被放置在该专区，请点击 [“英语口语/写作素材（通用）”](../English_Corpus/index.md)
+
 ## :fontawesome-solid-circle-info:{ .lg .middle } &nbsp; __考试内容__
 
 [:octicons-arrow-right-24: 了解更多](about.md)
