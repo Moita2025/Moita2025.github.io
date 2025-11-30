@@ -40,18 +40,10 @@ const $ = (tag, text = '', className = '') => {
 const renderCorpusEle = (ele, container) => {
     container.appendChild($('h2', `主题： ${ele.topic} `));
 
-    var keywords = $("p");
+    var keywords = $("ul");
     for (const keyword of ele.keywords)
     {
-        keywords.innerHTML += `
-        <span class="mdx-badge">
-            <span class="mdx-badge__icon">
-                <span class="twemoji">
-                    🏷
-                </span>
-            </span>
-            <span class="mdx-badge__text">${keyword}</span>
-        </span>`;
+        keywords.innerHTML += `<li class="tag__name">${keyword}</li>`;
     }
     container.appendChild(keywords);
 
