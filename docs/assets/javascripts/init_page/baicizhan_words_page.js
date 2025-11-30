@@ -5,43 +5,24 @@ const TOEFL_DICT_URL = '/assets/data/KyleBing-english-vocabulary/6-托福-顺序
 let bczDaysData = [];     // 原始百词斩数据：[{day:1, words:["abandon","ability",...]}, ...]
 let toeflDict = [];       // 托福词库（已加载完的完整数组）
 
+let dictMap = new Map();
+
+// ==================== 初始化词典 Map ====================
+function buildDictMap(dictArray) {
+    dictMap.clear();
+    dictArray.forEach(item => {
+        if (item.word) {
+            dictMap.set(item.word.toLowerCase(), item.translations?.[0]?.translation || '——');
+        }
+    });
+}
+
 // ==================== 工具函数 ====================
 const $ = (tag, text = '', className = '') => {
     const el = document.createElement(tag);
     if (text) el.textContent = text;
     if (className) el.className = className;
     return el;
-};
-
-// 朗读单词（使用浏览器自带 SpeechSynthesis）
-const speakWord = (word) => {
-    if (!word) return;
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.lang = 'en-US';
-    speechSynthesis.cancel();   // 防止队列堆积
-    speechSynthesis.speak(utter);
-};
-
-// 创建“自检翻译”单元格（默认隐藏，hover/tap 后显示）
-const createTranslationCell = (translation) => {
-    const td = $('td', translation, 'translation-cell');
-    // 初始状态：黑底白字但透明度为0，只有 hover/active 才显示
-    td.style.cssText = `
-        background:#000;
-        color:#fff;
-        cursor:pointer;
-        user-select:none;
-        opacity:0;
-        transition:opacity .25s;
-    `;
-    td.addEventListener('mouseenter', () => td.style.opacity = 1);
-    td.addEventListener('mouseleave', () => td.style.opacity = 0);
-    td.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        td.style.opacity = 1;
-    });
-    td.addEventListener('touchend', () => td.style.opacity = 0);
-    return td;
 };
 
 // ==================== 渲染核心 ====================
@@ -51,43 +32,41 @@ const renderDayTable = (dayObj, container) => {
     // ---- 第 X 天标题 ----
     container.appendChild($('h2', `第 ${day} 天`));
 
-    const tableContainer = $('div', '', 'word-table');
-    const table = $('table');
-    const thead = $('thead');
-    const tbody = $('tbody');
+    const tableContainer = document.createElement("div");
+    const tableId = `table-day-${day}`;
+    tableContainer.id = tableId;
 
-    const header = $('tr');
-    ['单词', '中文翻译', '朗读'].forEach(txt => header.appendChild($('th', txt)));
-    thead.appendChild(header);
-    table.appendChild(thead);
+    container.appendChild(tableContainer);
 
-    // ---- 遍历当天单词 ----
-    dayObj.words.forEach(word => {
-        const entry = toeflDict.find(item => item.word.toLowerCase() === word.toLowerCase());
-        const translation = entry?.translations?.[0]?.translation || '——';
+    const wordsWithTrans = dayObj.words.map(word => ({
+        word,
+        trans: dictMap.get(word.toLowerCase()) || '——'
+    }));
 
-        const tr = $('tr');
+    window.Utils.ui.renderTable(wordsWithTrans, 1, {
+        pageSize: wordsWithTrans.length,   // 本页就是这一天的全部
+        colFactor: 1,                      // 每行显示 2 组
+        isColArrange: false,               // 横向填充（更自然）
+        containerId: tableId,        // 临时借用，我们会立刻移动 DOM
+        headerTitles: ['单词', '中文翻译', '朗读'],
 
-        // 单词列
-        tr.appendChild($('td', word, 'word-cell'));
+        renderCell: (item) => {
+            return `
+                <td>${item.word}</td>
+                <td class="trans-hidden">${item.trans}</td>
+                <td class="speak-cell" data-word="${item.word}">🔊</td>
+            `;
+        },
 
-        // 翻译列（自检）
-        tr.appendChild(createTranslationCell(translation));
-
-        // 朗读按钮列
-        const speakTd = $('td');
-        const btn = $('button', '🔊', 'speak-btn');
-        btn.type = 'button';
-        btn.onclick = () => speakWord(word);
-        speakTd.appendChild(btn);
-        tr.appendChild(speakTd);
-
-        tbody.appendChild(tr);
+        emptyCell: `<td colspan="4"></td>`
     });
 
-    table.appendChild(tbody);
-    tableContainer.appendChild(table);
     container.appendChild(tableContainer);
+
+    container.lastElementChild?.addEventListener('click', e => {
+        const btn = e.target.closest('.speak-cell');
+        if (btn) window.Utils.vocab.speak(btn.dataset.word, 'en-US');
+    });
 };
 
 // 渲染一页（3 天）
@@ -110,7 +89,7 @@ const renderPage = (pageIndex, container) => {
 };
 
 // ==================== 初始化 ====================
-async function initReviewPage() {
+async function initBczPage() {
     const container = document.getElementById('render-area');
     if (!container) return;
 
@@ -124,6 +103,8 @@ async function initReviewPage() {
 
         const rawBcz = await bczResp.json();
         toeflDict = await dictResp.json();
+
+        buildDictMap(toeflDict);
 
         // 把百词斩的结构统一成 [{day:1, words:[...]}, ...]
         // 假设你的 bcz json 是 [[word,word,...],[word,...],...] 即每天一个数组
@@ -152,4 +133,4 @@ async function initReviewPage() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initReviewPage);
+document.addEventListener('DOMContentLoaded', initBczPage);
