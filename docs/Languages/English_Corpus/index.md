@@ -6,6 +6,8 @@ hide:
 # 英语口语/写作素材（通用）
 
 <button onclick="BackToTop()" class="BackToTop">返回 “语言”</button>
+&nbsp;
+<button onclick="window.location.href='./CorpusSearch'" class="BackToTop">模糊搜索</button>
 
 ---
 

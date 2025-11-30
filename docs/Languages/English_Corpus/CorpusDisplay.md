@@ -1,6 +1,8 @@
 # 素材分类展示
 
 <button onclick="BackToTop()" class="BackToTop">返回 “类别”</button>
+&nbsp;
+<button onclick="window.location.href='../CorpusSearch'" class="BackToTop">模糊搜索</button>
 
 ---
 

@@ -99,5 +99,6 @@ nav:
       - 英语口语/写作素材（通用）:
           - Languages/English_Corpus/index.md
           - Languages/English_Corpus/CorpusDisplay.md
+          - Languages/English_Corpus/CorpusSearch.md
   - 金融:
       - 汇率: Finance/Currencies.md
