@@ -96,5 +96,7 @@ nav:
               - Languages/TOEFL_iBT/Writing/Intro.md
           - 其他:
               - Languages/TOEFL_iBT/Other/BaiCiZhanVocab.md
+      - 口语/写作素材（通用）:
+          - Languages/English_Corpus/index.md
   - 金融:
       - 汇率: Finance/Currencies.md
