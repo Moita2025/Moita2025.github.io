@@ -1,7 +1,7 @@
 function search_init()
 {
     const search_config = {
-        wordsKey: 'words', // window 对象中存放数据的属性名
+        dataKey: 'words', // window 对象中存放数据的属性名
         fuseKeys: ['word', 'translations.translation', 'phrases.phrase', 'phrases.translation'],
         fuseThreshold: 0.3, // Fuse.js threshold 配置
 

@@ -111,13 +111,13 @@ Utils.ui.fuseSearchInit = function(config = {}){
     } = config;
 
     // ==== 1. 确保数据存在 ===================================================
-    if (window[config.wordsKey] == []) {
-        console.log(`${config.wordsKey} == []`);
+    if (window[config.dataKey] == []) {
+        console.log(`${config.dataKey} == []`);
         return;
     }
 
     // ==== 2. 初始化 Fuse.js ==================================================
-    const fuse = new Fuse(window[config.wordsKey], {
+    const fuse = new Fuse(window[config.dataKey], {
         keys: config.fuseKeys,
         threshold: fuseThreshold,
     });
