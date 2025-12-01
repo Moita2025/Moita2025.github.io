@@ -4,12 +4,12 @@
     margin-bottom: 12px;
 }
 
-#word-clear-btn {
+.search-box [id$="-clear-btn"] {
     padding: 6px 12px;
     cursor: pointer;
 }
 
-#word-search-input { flex: 1; padding: 6px 10px; font-size: 1rem; }
+.search-box [id$="-search-input"] { flex: 1; padding: 6px 10px; font-size: 1rem; }
 
 #search-result-list {
     border: 1.5px solid var(--md-default-fg-color--lighter);
