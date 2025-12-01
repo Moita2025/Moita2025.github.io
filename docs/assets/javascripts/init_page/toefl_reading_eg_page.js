@@ -113,8 +113,7 @@ async function initToeflReadPage() {
             totalItems: totalPages,
             pageSize: 1,                            // 每页 1 个 TPO
             onChange: (page) => {
-                const entry = articleData[page - 1];
-                RenderArticle(entry);
+                renderPage(page);;
                 scrollTo(0, 0);
             }
         });

@@ -960,29 +960,29 @@ Utils.mkdocsRewrite.rewriteToc = function (config = {}){
 
     // 3. 找到所有 h2
     const h2s = article.querySelectorAll('h2');
+    const counter = new Map();
 
     h2s.forEach(h2 => {
-        // h2 文本
         const title = h2.textContent.trim();
+        if (!title) return;
 
-        // 生成 id（简单 slug，可根据需要增强）
-        const id = title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '').toLowerCase();
+        // 生成基础 slug
+        const base = title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '').toLowerCase();
 
-        // 给 h2 设置 id
+        // 计数并决定最终 id
+        const idx = (counter.get(title) || 0) + 1;
+        counter.set(title, idx);
+
+        const id = idx === 1 ? base : `${base}_${idx}`;
         h2.id = id;
 
-        // 生成 li
+        // TOC 条目
         const li = document.createElement('li');
         li.className = 'md-nav__item';
-
         li.innerHTML = `
-        <a href="#${id}" class="md-nav__link">
-            <span class="md-ellipsis">
-            ${title}
-            </span>
-        </a>
-        `;
-
+            <a href="#${id}" class="md-nav__link">
+                <span class="md-ellipsis">${title}</span>
+            </a>`;
         ul.appendChild(li);
     });
 }
