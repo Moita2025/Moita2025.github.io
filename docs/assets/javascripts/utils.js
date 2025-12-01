@@ -117,7 +117,8 @@ Utils.ui.fuseSearchInit = function(config = {}){
     const {
         fuseThreshold = 0.3,
         maxResults = 20,
-        dedupeBy = null
+        dedupeBy = null,
+        rewriteToc = false
     } = config;
 
     // ==== 1. 确保数据存在 ===================================================
@@ -193,6 +194,8 @@ Utils.ui.fuseSearchInit = function(config = {}){
 
         // 更新 URL search params
         window.Utils.url.updateSearchParams({ search: keyword });
+
+        if (rewriteToc) window.Utils.mkdocsRewrite.rewriteToc();
     }
 
     // ==== 5. URL 自动搜索 ===================================================
@@ -537,6 +540,44 @@ Utils.ui.generateLink = function(text, href, isBlank = false, isUnderlined = fal
     if (isUnderlined) link.style.textDecoration = "underline";
 
     return link;
+}
+
+Utils.ui.renderCorpusEle = function(ele, container, returnStr = false) {
+
+    if (returnStr)
+    {
+        let result = "";
+        
+        result += `<h2>主题： ${ele.topic} </h2><ul>`;
+        for (const keyword of ele.keywords)
+        {
+            result += `<li class="tag__name">${keyword}</li>`;
+        }
+        result += `</ul>`;
+
+        for (const text of ele.text)
+        {
+            result += `<p>${text}</p>`;
+        }
+
+        return result;
+    }
+    else
+    {
+        container.appendChild($('h2', `主题： ${ele.topic} `));
+
+        var keywords = $("ul");
+        for (const keyword of ele.keywords)
+        {
+            keywords.innerHTML += `<li class="tag__name">${keyword}</li>`;
+        }
+        container.appendChild(keywords);
+
+        for (const text of ele.text)
+        {
+            container.appendChild($("p", text));
+        }
+    }
 }
 
 ////////vocab

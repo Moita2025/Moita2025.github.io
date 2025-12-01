@@ -36,23 +36,6 @@ const $ = (tag, text = '', className = '') => {
     return el;
 };
 
-// ==================== 渲染核心 ====================
-const renderCorpusEle = (ele, container) => {
-    container.appendChild($('h2', `主题： ${ele.topic} `));
-
-    var keywords = $("ul");
-    for (const keyword of ele.keywords)
-    {
-        keywords.innerHTML += `<li class="tag__name">${keyword}</li>`;
-    }
-    container.appendChild(keywords);
-
-    for (const text of ele.text)
-    {
-        container.appendChild($("p", text));
-    }
-};
-
 const renderPage = (pageIndex, container) => {
     container.innerHTML = '';
 
@@ -60,7 +43,7 @@ const renderPage = (pageIndex, container) => {
     const end = Math.min(start + elesPerPage, corpusListData[0].length);
     const itemsToShow = corpusListData[0].slice(start, end);
 
-    itemsToShow.forEach(item => renderCorpusEle(item, container));
+    itemsToShow.forEach(item => window.Utils.ui.renderCorpusEle(item, container));
 
     // 更新分页器标题（可选）
     window.Utils?.mkdocsRewrite?.rewriteMainTitle({

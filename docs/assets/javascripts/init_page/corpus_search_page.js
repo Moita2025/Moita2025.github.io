@@ -12,11 +12,11 @@ const search_config = {
     pattern: /^[A-Za-z]+$/,
     dedupeBy: 'topic',
 
+    rewriteToc: true,
+
     resultListId: 'search-result-items',
     maxResults: 6, // 最多显示 20 条
-    renderItem: (item) => `
-        ${item.topic}
-        ：${item.text}`,
+    renderItem: (item) => window.Utils.ui.renderCorpusEle(item,'', true),
     overflowText: '…',
     overflowOpacity: 0.3,
     overflowFontWeight: 'bold'
