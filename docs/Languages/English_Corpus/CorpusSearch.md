@@ -10,7 +10,9 @@
   <button id="keyword-clear-btn" class="ui-btn">清空</button>
 </div>
 
-<ul id="search-result-items"></ul>
+---
+
+<div id="search-result-items"></div>
 
 <script src="/assets/javascripts/utils.js"></script>
 <script src="/assets/javascripts/third_party/fuse.js"></script>

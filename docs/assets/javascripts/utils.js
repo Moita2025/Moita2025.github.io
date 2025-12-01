@@ -98,6 +98,15 @@ Utils.str.splitAfterColon = function(strings){
     });
 }
 
+Utils.str.hasCompleteLiTags = function(str) {
+    // 使用正则表达式匹配完整的<li>...</li>标签对
+    const liRegex = /<li[^>]*>([\s\S]*?)<\/li>/gi;
+    const matches = str.match(liRegex);
+
+    // 如果找到匹配项，则返回true
+    return matches && matches.length > 0;
+}
+
 ////////list
 
 Utils.list.shuffle = function(arr) { return arr.sort(() => Math.random() - 0.5); }
@@ -107,11 +116,12 @@ Utils.list.shuffle = function(arr) { return arr.sort(() => Math.random() - 0.5);
 Utils.ui.fuseSearchInit = function(config = {}){
     const {
         fuseThreshold = 0.3,
-        maxResults = 20
+        maxResults = 20,
+        dedupeBy = null
     } = config;
 
     // ==== 1. 确保数据存在 ===================================================
-    if (window[config.dataKey] == []) {
+    if (!window[config.dataKey] || window[config.dataKey].length === 0) {
         console.log(`${config.dataKey} == []`);
         return;
     }
@@ -128,6 +138,16 @@ Utils.ui.fuseSearchInit = function(config = {}){
     const clearBtn = document.getElementById(config.clearBtnId);
     const resultList = document.getElementById(config.resultListId);
 
+    function getDedupeValue(item) {
+        if (!dedupeBy) {
+            // 自动探测常见唯一字段
+            return item.id ?? item.topic ?? item.word ?? item.title ?? JSON.stringify(item);
+        }
+        // 支持点路径，如 'metadata.id'
+        return dedupeBy.split('.').reduce((obj, key) => obj?.[key], item) 
+               ?? JSON.stringify(item); // 兜底
+    }
+
     // ==== 4. 搜索函数 ========================================================
     function doSearch() {
         const keyword = inputEl.value.trim();
@@ -138,32 +158,37 @@ Utils.ui.fuseSearchInit = function(config = {}){
         const results = fuse.search(keyword);
 
         const uniqueResults = [];
-        const seenWords = new Set();
+        const seen = new Set();
         for (const result of results) {
-            const word = result.item.word;
-            if (!seenWords.has(word)) {
-                seenWords.add(word);
+            const value = getDedupeValue(result.item);
+            if (!seen.has(value)) {
+                seen.add(value);
                 uniqueResults.push(result);
             }
         }
 
         const max = maxResults;
         const realCount = Math.min(uniqueResults.length, max);
+        const limited = uniqueResults.slice(0, realCount);
 
-        for (let i = 0; i < realCount; i++) {
-            const item = uniqueResults[i].item;
-            const li = document.createElement("li");
-            li.innerHTML = config.liInnerHTML(item);
-            resultList.appendChild(li);
-        }
+        var isli = false;
+
+        limited.forEach((result, index) => {
+            const el = config.renderItem(result.item, index, keyword, result);
+
+            if (Utils.str.hasCompleteLiTags(el)) 
+            {if (!isli) isli = true;}
+
+            resultList.innerHTML += el;
+        });
 
         // 超过最大显示条数，追加 “...” （占 1 个 li）
         if (uniqueResults.length > max) {
-            const li = document.createElement("li");
-            li.textContent = config.overflowText;
-            li.style.opacity = config.overflowOpacity;
-            li.style.fontWeight = config.overflowFontWeight;
-            resultList.appendChild(li);
+            const of = isli ? document.createElement("li") : document.createElement("p");
+            of.textContent = config.overflowText;
+            of.style.opacity = config.overflowOpacity;
+            of.style.fontWeight = config.overflowFontWeight;
+            resultList.appendChild(of);
         }
 
         // 更新 URL search params

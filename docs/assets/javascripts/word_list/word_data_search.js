@@ -10,12 +10,13 @@ function search_init()
         clearBtnId: 'word-clear-btn',
 
         pattern: /^[A-Za-z]+$/,
+        dedupeBy: 'word',
 
         resultListId: 'search-result-list',
         maxResults: 20, // 最多显示 20 条
-        liInnerHTML: (item) => `
+        renderItem: (item) => `<li>
             ${window.Utils.vocab.getWordLink(item.word, window.currentWordKey)}
-            ：${item.translations[0].translation}`,
+            ：${item.translations[0].translation}</li>`,
         overflowText: '…',
         overflowOpacity: 0.6,
         overflowFontWeight: 'bold'
