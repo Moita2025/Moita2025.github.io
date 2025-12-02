@@ -59,8 +59,8 @@ nav:
       - Languages/index.md
       - 英语词汇:
           - Languages/English_Vocab/Words.md
-          - Languages/English_Vocab/WordDetail.md
           - Languages/English_Vocab/Practice_en2zh_mcq.md
+          - Languages/English_Vocab/WordDetail.md
       - 托福:
           - Languages/TOEFL_iBT/index.md
           - 考试内容:  Languages/TOEFL_iBT/about.md
@@ -94,6 +94,7 @@ nav:
               - Languages/TOEFL_iBT/Speaking/GeneralTemplate.md
           - 写作:
               - Languages/TOEFL_iBT/Writing/Intro.md
+              - Languages/TOEFL_iBT/Writing/GeneralTemplate.md
           - 其他:
               - Languages/TOEFL_iBT/Other/BaiCiZhanVocab.md
       - 英语口语/写作素材（通用）:
