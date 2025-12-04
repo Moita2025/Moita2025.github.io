@@ -119,6 +119,25 @@ Utils.str.truncateText = function(str, maxLength = 20){
     return result;
 }
 
+Utils.str.getTransPreffix = function(str, maxLength = 20){
+    str = String(str || '').trim();
+    str = str.replace(/\[.*?\]/g, '');
+
+    if (str.length <= maxLength) {
+        return str;
+    }
+
+    for (let i = maxLength; i >= 1; i--) {
+        const prefix = str.substring(0, i);
+        const lastChar = prefix.charAt(i - 1);
+        if (lastChar === '，' || lastChar === '；'){
+            return prefix;
+        }
+    }
+
+    return str.substring(0, 20);
+}
+
 ////////list
 
 Utils.list.shuffle = function(arr) { return arr.sort(() => Math.random() - 0.5); }
