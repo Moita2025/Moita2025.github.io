@@ -7,6 +7,13 @@ window.Utils = {
     mkdocsRewrite: {}
 };
 
+const $$ = (tag, text = '', className = '') => {
+    const el = document.createElement(tag);
+    if (text) el.textContent = text;
+    if (className) el.className = className;
+    return el;
+};
+
 ////////url
 
 Utils.url.getSearchParam = function(config = {}){
@@ -595,9 +602,9 @@ Utils.ui.renderCorpusEle = function(ele, container, returnStr = false) {
     }
     else
     {
-        container.appendChild($('h2', `主题： ${ele.topic} `));
+        container.appendChild($$('h2', `主题： ${ele.topic} `));
 
-        var keywords = $("ul");
+        var keywords = $$("ul");
         for (const keyword of ele.keywords)
         {
             keywords.innerHTML += `<li class="tag__name">${keyword}</li>`;
@@ -606,7 +613,7 @@ Utils.ui.renderCorpusEle = function(ele, container, returnStr = false) {
 
         for (const text of ele.text)
         {
-            container.appendChild($("p", text));
+            container.appendChild($$("p", text));
         }
     }
 }

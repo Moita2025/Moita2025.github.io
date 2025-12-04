@@ -28,14 +28,6 @@ const TYPE_NAME_MAP = {
     "advertising": "广告"
 };
 
-// ==================== 工具函数 ====================
-const $ = (tag, text = '', className = '') => {
-    const el = document.createElement(tag);
-    if (text) el.textContent = text;
-    if (className) el.className = className;
-    return el;
-};
-
 const renderPage = (pageIndex, container) => {
     container.innerHTML = '';
 

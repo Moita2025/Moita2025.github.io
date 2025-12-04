@@ -17,20 +17,12 @@ function buildDictMap(dictArray) {
     });
 }
 
-// ==================== 工具函数 ====================
-const $ = (tag, text = '', className = '') => {
-    const el = document.createElement(tag);
-    if (text) el.textContent = text;
-    if (className) el.className = className;
-    return el;
-};
-
 // ==================== 渲染核心 ====================
 const renderDayTable = (dayObj, container) => {
     const day = dayObj.day;
 
     // ---- 第 X 天标题 ----
-    container.appendChild($('h2', `第 ${day} 天`));
+    container.appendChild($$('h2', `第 ${day} 天`));
 
     const tableContainer = document.createElement("div");
     const tableId = `table-day-${day}`;
