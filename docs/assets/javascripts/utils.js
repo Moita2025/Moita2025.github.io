@@ -107,6 +107,18 @@ Utils.str.hasCompleteLiTags = function(str) {
     return matches && matches.length > 0;
 }
 
+Utils.str.truncateText = function(str, maxLength = 20){
+
+    var result = "";
+
+    if (str.length > maxLength) {
+        result = str.slice(str, maxLength - 3) + '...';  // 截取并添加省略号
+    }
+    else{result = str;}
+
+    return result;
+}
+
 ////////list
 
 Utils.list.shuffle = function(arr) { return arr.sort(() => Math.random() - 0.5); }

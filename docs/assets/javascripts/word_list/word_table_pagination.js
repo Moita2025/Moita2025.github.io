@@ -13,7 +13,7 @@ initWordsGeneric('wordsReady', function(words) {
             <td>
                 ${window.Utils.vocab.getWordLink(item.word, window.currentWordKey)}
             </td>
-            <td>${item.translations[0]?.translation || ''}</td>`
+            <td>${window.Utils.str.truncateText(item.translations[0]?.translation || '', 20)}</td>`
     };
 
     // 初始化分页器
